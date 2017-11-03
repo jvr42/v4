@@ -1,0 +1,154 @@
+<navbar></navbar>
+<div class="container">
+    <h3 class="text-center">ORDEN # : {{data.orden_id}}</h3>
+    <hr>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-4">Tipo de Orden:</div>
+                        <div class="col-lg-8">
+                            <select name="tipo" ng-model="data.tipo" class="form-control">
+                                <option value="servir">Servir</option>
+                                <option value="llevar">Llevar</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div ng-if="data.tipo == 'servir'" class="row">
+                        <div class="col-lg-4">Mesa:</div>
+                        <div class="col-lg-8">
+                            <select name="mesa" ng-model="data.mesa" class="form-control">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
+                                <option value="25">25</option>
+                                <option value="26">26</option>
+                                <option value="27">27</option>
+                                <option value="28">28</option>
+                                <option value="29">29</option>
+                                <option value="30">30</option>
+                                <option value="31">31</option>
+                                <option value="32">32</option>
+                                <option value="33">33</option>
+                                <option value="34">34</option>
+                                <option value="35">35</option>
+                                <option value="36">36</option>
+                                <option value="37">37</option>
+                                <option value="38">38</option>
+                                <option value="39">39</option>
+                                <option value="40">40</option>
+                                <option value="41">41</option>
+                                <option value="42">42</option>
+                                <option value="43">43</option>
+                                <option value="44">44</option>
+                                <option value="45">45</option>
+                                <option value="46">46</option>
+                                <option value="47">47</option>
+                                <option value="48">48</option>
+                                <option value="49">49</option>
+                                <option value="50">50</option>
+                                <option value="51">51</option>
+                                <option value="52">52</option>
+                                <option value="53">53</option>
+                                <option value="54">54</option>
+                                <option value="55">55</option>
+                                <option value="br 1">br 1</option>
+                                <option value="br 2">br 2</option>
+                                <option value="br 3">br 3</option>
+                                <option value="br 4">br 4</option>
+                                <option value="br 5">br 5</option>
+                                <option value="br 6">br 6</option>
+                                <option value="br 7">br 7</option>
+                                <option value="br 8">br 8</option>
+                                <option value="br 9">br 9</option>
+                                <option value="br 10">br 10</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div ng-repeat="item in ticket" class="container-fluid" style="font-size:18px;">
+                        <div class="row">
+                            <div class="col-lg-2 col-xs-2"><span class="badge" style="font-size:18px;">{{item.cantidad}}</span></div>
+                            <div class="col-lg-4 col-xs-4 text-left">{{item.name}}</div>
+                            <div class="col-lg-3 col-xs-4">{{item.precio * item.cantidad | currency}}</div>
+                            <div class="col-lg-3 col-xs-2 text-rigth">
+                                <button aria-hidden="true" ng-if="item.servido==false || userRole == 'administrador'" ng-click="delete(item)" class="btn-xs btn-danger glyphicon glyphicon-remove"></button>
+                                <button aria-hidden="true" ng-if="item.servido==false || userRole == 'administrador'" ng-click="addToTicket(item)" class="btn-xs btn-success glyphicon glyphicon-plus"></button>
+                                <button aria-hidden="true" ng-click="mostrarObservacion(item)" class="btn-xs btn-warning glyphicon glyphicon-search"></button>
+                            </div>
+                        </div>
+                        <div ng-if="item.showObservacion">
+                            <textarea class="form-control" ng-model="item.observacion" style="margin-top:10px;"></textarea>
+                        </div>
+                        <hr/>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12 text-center" style="font-size:18px;">{{ calculateTotal() | currency }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 text-center">
+                                <hr/>
+                                <button ng-click="updateTicket()" class="btn-lg btn-success">ACTUALIZAR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    <input type="text" ng-model="producto" class="form-control" style="height:55px;font-size:26px;" />
+                </div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div style="margin-bottom:10px;padding-top:10px;padding-bottom:10px;font-size:24px;white-space: normal;" ng-repeat="producto in productos | filter:producto" ng-click="addToTicket(producto)" class="col-lg-12 col-xs-12 btn btn-default">{{producto.name}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer></footer>
+
+
+<script type="text/ng-template" id="deleteProducto.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Borrar Producto de la Orden</h3>
+    </div>    
+    <div class="modal-body">
+      <p><b>Esta seguro que desea borrar este producto {{item.name}}?</b></p>
+      <h4>Detalle de modificaci&oacute;n:</h4>
+      <textarea class="form-control" ng-model="observacion"></textarea>
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+        <button class="btn-lg btn-danger" type="button" ng-if="showDeleteButton()" ng-click="borrar()">Borrar</button>
+        </div>
+    </div>
+</script>

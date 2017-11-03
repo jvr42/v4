@@ -1,0 +1,49 @@
+2017-09-27 01:20:51 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Apps\2016\services\node_modules\node-windows\lib\wrapper.js --file C:\Apps\2016\kanguru\server\app.js --log "KANGURU BEACH BAR APP wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2017-09-27 01:20:51 - Started 1888
+2017-09-27 01:23:11 - Stopping kangurubeachbarapp.exe
+2017-09-27 01:23:12 - ProcessKill 1888
+2017-09-27 01:23:16 - Shutdown exception
+Message:A system shutdown is in progress. (Exception from HRESULT: 0x8007045B)
+Stacktrace:   at System.Runtime.InteropServices.Marshal.ThrowExceptionForHRInternal(Int32 errorCode, IntPtr errorInfo)
+   at System.Management.ManagementScope.InitializeGuts(Object o)
+   at System.Management.ManagementScope.Initialize()
+   at System.Management.ManagementObjectSearcher.Initialize()
+   at System.Management.ManagementObjectSearcher.Get()
+   at winsw.WrapperService.GetChildPids(Int32 pid)
+   at winsw.WrapperService.StopProcessAndChildren(Int32 pid)
+   at winsw.WrapperService.StopIt()
+   at winsw.WrapperService.OnShutdown()
+2017-09-27 01:24:49 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Apps\2016\services\node_modules\node-windows\lib\wrapper.js --file C:\Apps\2016\kanguru\server\app.js --log "KANGURU BEACH BAR APP wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2017-09-27 01:24:52 - Started 1332
+2017-09-27 01:33:23 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Apps\2016\services\node_modules\node-windows\lib\wrapper.js --file C:\Apps\2016\kanguru\server\app.js --log "KANGURU BEACH BAR APP wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2017-09-27 01:33:23 - Started 12280
+2017-09-27 01:34:14 - Stopping kangurubeachbarapp.exe
+2017-09-27 01:34:14 - ProcessKill 12280
+2017-09-27 01:34:15 - Found child process: 10836 Name: conhost.exe
+2017-09-27 01:34:15 - Found child process: 8632 Name: node.exe
+2017-09-27 01:34:15 - Stopping process 10836
+2017-09-27 01:34:15 - Send SIGINT 10836
+2017-09-27 01:34:16 - SIGINT to 10836 failed - Killing as fallback
+2017-09-27 01:34:16 - Stopping process 8632
+2017-09-27 01:34:16 - Send SIGINT 8632
+2017-09-27 01:34:16 - SIGINT to 8632 failed - Killing as fallback
+2017-09-27 01:34:16 - Stopping process 12280
+2017-09-27 01:34:16 - Send SIGINT 12280
+2017-09-27 01:34:16 - SIGINT to 12280 failed - Killing as fallback
+2017-09-27 01:34:16 - Finished kangurubeachbarapp.exe
+2017-09-27 01:34:18 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Apps\2016\services\node_modules\node-windows\lib\wrapper.js --file C:\Apps\2016\kanguru\server\app.js --log "KANGURU BEACH BAR APP wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2017-09-27 01:34:18 - Started 12568
+2017-09-27 01:42:06 - Stopping kangurubeachbarapp.exe
+2017-09-27 01:42:06 - ProcessKill 12568
+2017-09-27 01:42:07 - Found child process: 12576 Name: conhost.exe
+2017-09-27 01:42:07 - Found child process: 12684 Name: node.exe
+2017-09-27 01:42:07 - Stopping process 12576
+2017-09-27 01:42:08 - Send SIGINT 12576
+2017-09-27 01:42:08 - SIGINT to 12576 failed - Killing as fallback
+2017-09-27 01:42:08 - Stopping process 12684
+2017-09-27 01:42:08 - Send SIGINT 12684
+2017-09-27 01:42:08 - SIGINT to 12684 failed - Killing as fallback
+2017-09-27 01:42:08 - Stopping process 12568
+2017-09-27 01:42:08 - Send SIGINT 12568
+2017-09-27 01:42:08 - SIGINT to 12568 failed - Killing as fallback
+2017-09-27 01:42:08 - Finished kangurubeachbarapp.exe

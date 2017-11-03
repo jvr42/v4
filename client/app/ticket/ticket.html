@@ -1,0 +1,27 @@
+<div class="paper">
+<!-- 	  <h3 class="text-center"><b>Kanguru Beach Bar</b></h3> -->
+  <img class="logo center-block" src="../assets/images/logo.png">
+  <br>
+  <div><b># de Orden:</b> {{orden.orden_id}}</div>
+  <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
+  <div><b>Tipo de orden:</b> {{orden.tipo}}</div>
+  <div><b>Mesa:</b> {{orden.mesa}}</div>
+  <hr>
+    <table class="table">
+      <thead>
+        <th>Cantidad</th>
+        <th>Producto</th>
+        <th>Precio</th>
+      </thead>
+      <tr ng-repeat="producto in orden.productos">
+        <td>{{producto.cantidad}}</td>
+        <td>{{producto.name}}</td>
+        <td>{{producto.precio * producto.cantidad | currency: $: 0}}</td>
+      </tr>
+    </table>
+  <hr>
+  <div class="text-center"><b>Por pagar:</b> {{calculatePendiente() | currency: $: 0}}</div>
+  <div class="text-center"><b>Propina:</b> {{ totalPropina | currency: $: 0 }}</div>
+  <h3><div class="text-center"><b>TOTAL:</b> {{ totalWithPropina | currency: $: 0 }}</div></h3>
+  <hr>
+</div>

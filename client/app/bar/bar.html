@@ -1,0 +1,42 @@
+<navbar></navbar>
+<div class="container">
+    <h3 class="text-center">VISOR DE BARRA</h3>
+    <hr>
+    <div class="row">
+        <div class="col-lg-12 text-left">
+            <div ng-repeat="orden in ordenes" ng-if="revisa(orden)" class="orden col-lg-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-4 col-xs-4 text-left"><span style="font-size:20px;"><b># {{orden.orden_id}}</b></span></div>
+                                <div class="col-lg-4 col-xs-4 text-center"><span style="font-size:20px;"><b>{{orden.usuario.name}}</b> | para {{orden.tipo}}</span></div>
+                                <div class="col-lg-4 col-xs-4 text-right"><span style="font-size:20px;">{{ orden.fechaEditado | date : 'h:mm:ss a' }}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div ng-repeat="producto in orden.productos" class="productos">
+                            <div ng-if="producto.tipo == 'bar'" class="container-fluid">
+                                <div class="row" ng-hide="producto.servido == true">
+                                    <div class="col-lg-2 col-xs-2 text-left"><span style="font-size:20px;" class="badge">{{producto.cantidad}}</span></div>
+                                    <div class="col-lg-5 col-xs-5 text-left">
+                                        <span style="font-size:20px;" ng-if="producto.servido == false"> {{producto.name}}</span>
+                                        <span style="font-size:20px;text-decoration:line-through" ng-if="producto.servido == true"> {{producto.name}}</span>
+                                    </div>
+                                    <div class="col-lg-5 col-xs-5 text-right">
+                                        <button aria-hidden="true" ng-click="listo(orden, producto)" class="btn btn-success glyphicon glyphicon-ok"></button>
+                                    </div>
+                                </div>
+                                <div ng-if="producto.observacion" ng-hide="producto.servido == true" class="well" style="margin-top: 10px;font-size: 18px;">
+                                    {{producto.observacion}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer></footer>

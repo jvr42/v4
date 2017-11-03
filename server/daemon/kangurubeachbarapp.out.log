@@ -1,0 +1,41 @@
+Express server listening on 9000, in development mode
+127.0.0.1:57029
+[0mPOST /auth/local [32m200 [0m55.862 ms - 215[0m
+[0mGET /api/users/me [32m200 [0m8.834 ms - 215[0m
+127.0.0.1:57041
+[0mGET /api/users [32m200 [0m24.786 ms - -[0m
+[0mGET /api/productos [32m200 [0m96.217 ms - -[0m
+[0mGET /api/ordenes/user/Admin [32m200 [0m126.415 ms - -[0m
+[0mGET /api/users [36m304 [0m7.102 ms - -[0m
+[0mGET /api/ordenes/ [32m200 [0m136.864 ms - -[0m
+Express server listening on 9000, in development mode
+Express server listening on 9000, in development mode
+Express server listening on 9000, in development mode
+Express server listening on 9000, in development mode
+Express server listening on 9000, in development mode
+Express server listening on 9000, in development mode
+[0mPOST /auth/local [32m200 [0m291.485 ms - 215[0m
+[0mGET /api/users/me [36m304 [0m73.639 ms - -[0m
+127.0.0.1:49978
+[0mGET /api/users [36m304 [0m67.144 ms - -[0m
+[0mGET /api/productos [36m304 [0m184.821 ms - -[0m
+[0mGET /api/users [36m304 [0m10.268 ms - -[0m
+[0mGET /api/ordenes/ [36m304 [0m2361.197 ms - -[0m
+[0mGET /api/productos [36m304 [0m72.489 ms - -[0m
+[0mGET /api/ordenes/59af4ef96d92d0403391a0da [32m200 [0m83.871 ms - -[0m
+[0mGET /api/users [36m304 [0m13.855 ms - -[0m
+[0mGET /api/ordenes/ [36m304 [0m146.679 ms - -[0m
+[0mGET /api/users [36m304 [0m12.240 ms - -[0m
+[0mGET /api/productos [36m304 [0m73.842 ms - -[0m
+[0mGET /api/ordenes/ [36m304 [0m127.516 ms - -[0m
+[0mGET /api/ordenes/ [36m304 [0m146.340 ms - -[0m
+[0mGET /api/productos [36m304 [0m42.030 ms - -[0m
+[0mGET /api/users [36m304 [0m42.860 ms - -[0m
+2017-08-28T04:41:34.874Z
+2017-09-27T04:41:34.874Z
+[0mGET /api/ordenes/1503895294874/1506487294874 [32m200 [0m143.770 ms - -[0m
+[0mGET /api/ordenes/ventas/1503895294874/1506487294874 [32m200 [0m346.952 ms - 28[0m
+[0mGET /api/ordenes/productos/1503895294874/1506487294874 [32m200 [0m301.436 ms - 70[0m
+[0mGET /api/counter [36m304 [0m11.181 ms - -[0m
+[0mGET /api/users [36m304 [0m11.750 ms - -[0m
+[0mGET /api/ordenes/ [36m304 [0m195.914 ms - -[0m

@@ -1,0 +1,24 @@
+{
+  "name": "pos",
+  "version": "0.0.0",
+  "dependencies": {
+    "alertify": "~0.3.10",
+    "angular": "~1.4.0",
+    "angular-bootstrap": "~0.13.0",
+    "angular-cookies": "~1.4.0",
+    "angular-resource": "~1.4.0",
+    "angular-sanitize": "~1.4.0",
+    "angular-socket-io": "~0.7.0",
+    "angular-ui-router": "~0.2.15",
+    "bootstrap": "~3.1.1",
+    "es5-shim": "~3.0.1",
+    "font-awesome": ">=4.1.0",
+    "json3": "~3.3.1",
+    "lodash": "~2.4.1",
+    "angular-datatables": "^0.5.3",
+    "moment": "^2.19.1"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.4.0"
+  }
+}

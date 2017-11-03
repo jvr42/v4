@@ -1,0 +1,20 @@
+(node:10308) DeprecationWarning: crypto.pbkdf2 without specifying a digest is deprecated. Please specify a digest
+MongoDB connection error: MongoError: connect ECONNREFUSED 127.0.0.1:27017
+MongoDB connection error: MongoError: connect ECONNREFUSED 127.0.0.1:27017
+MongoDB connection error: MongoError: connect ECONNREFUSED 127.0.0.1:27017
+MongoDB connection error: MongoError: connect ECONNREFUSED 127.0.0.1:27017
+C:\Apps\2016\services\node_modules\node-windows\lib\wrapper.js:177
+    child.send('shutdown');
+         ^
+
+TypeError: Cannot read property 'send' of null
+    at process.killkid (C:\Apps\2016\services\node_modules\node-windows\lib\wrapper.js:177:10)
+    at emitOne (events.js:96:13)
+    at process.emit (events.js:188:7)
+    at process.exit (internal/process.js:164:15)
+    at monitor (C:\Apps\2016\services\node_modules\node-windows\lib\wrapper.js:99:17)
+    at ChildProcess.<anonymous> (C:\Apps\2016\services\node_modules\node-windows\lib\wrapper.js:170:5)
+    at emitTwo (events.js:106:13)
+    at ChildProcess.emit (events.js:191:7)
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:219:12)
+(node:12684) DeprecationWarning: crypto.pbkdf2 without specifying a digest is deprecated. Please specify a digest

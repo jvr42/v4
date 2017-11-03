@@ -1,0 +1,26 @@
+<div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" style="font-size: 14px;color: black;"><b>Kanguru Beach Bar</b></a>
+    </div>
+    <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+      <ul class="nav navbar-nav">
+        <li ng-repeat="item in menu" ui-sref-active="active">
+            <a ng-show="isLoggedIn()" ng-if="check(item.auth, getRole())" ui-sref="{{item.state}}">{{item.title}}</a>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li ng-hide="isLoggedIn()" ui-sref-active="active"><a ui-sref="login">Iniciar Sesion</a></li>
+        <li ng-show="isLoggedIn()"><p class="navbar-text">{{ getCurrentUser().name }}</p> </li>
+        <li ng-show="isLoggedIn()"><a ui-sref="logout">Cerrar Sesion</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

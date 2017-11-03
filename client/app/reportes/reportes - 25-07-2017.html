@@ -1,0 +1,163 @@
+<navbar></navbar>
+<div class="container">
+    <h3 class="text-center">REPORTES</h3>
+    <hr>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <label>Desde: </label>
+                        <p class="input-group">
+                            <input type="text" datepicker-popup="dd-MM-yyyy h:mm a" ng-model="desde.today" is-open="desde.status.opened" close-text="Cerrar" class="form-control" /><span class="input-group-btn">
+              <button type="button" name="desde" ng-click="open($event)" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button></span>
+                        </p>
+                        <label>Hasta: </label>
+                        <p class="input-group">
+                            <input type="text" datepicker-popup="dd-MM-yyyy h:mm a" ng-model="hasta.today" is-open="hasta.status.opened" close-text="Cerrar" class="form-control" /><span class="input-group-btn">
+              <button type="button" name="hasta" ng-click="open($event)" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button></span>
+                        </p>
+                        <label>Usuario: </label>
+                        <div class="panel panel-default">
+                            <div class="panel-heading text-center">
+                                <input type="text" ng-change="usuario.hide = false" ng-model="usuario.text" class="form-control" style="height:55px;font-size:26px;" />
+                            </div>
+                            <div class="panel-body">
+                                <div class="container-fluid">
+                                    <div class="row" ng-show="usuario.text != undefined">
+                                        <div ng-show="!usuario.hide" style="margin-bottom:10px;padding-top:10px;padding-bottom:10px;font-size:24px;white-space: normal;" ng-repeat="u in usuarios | filter:usuario.text" ng-click="selectUser(u)" class="col-lg-12 col-xs-12 btn btn-default">{{u.name}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label>Producto: </label>
+                        <div class="panel panel-default">
+                            <div class="panel-heading text-center">
+                                <input type="text" ng-change="producto.hide = false" ng-model="producto.text" class="form-control" style="height:55px;font-size:26px;" />
+                            </div>
+                            <div class="panel-body">
+                                <div class="container-fluid">
+                                    <div class="row" ng-show="producto.text != undefined">
+                                        <div ng-show="!producto.hide" style="margin-bottom:10px;padding-top:10px;padding-bottom:10px;font-size:24px;white-space: normal;" ng-repeat="p in productos | filter:producto.text" ng-click="selectProduct(p)" class="col-lg-12 col-xs-12 btn btn-default">{{p.name}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button class="btn btn-warning" ng-click="getPedidos(desde.today,hasta.today)">Generar Reporte</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div ng-if="loading" class="text-center" style="padding-top:120px;"><img src="assets/images/loading_spinner.gif" width="50"></div>
+                <div class="well" ng-if="loading == false" >
+                    <h3>Resultados:</h3>
+                    <hr>
+                    <div class="text-center">
+                        <div class="results" ng-if="results.totalOrdenes != 0">
+                            <div class="results_header"><span class="glyphicon glyphicon-list-alt"></span> </div>
+                            {{results.totalOrdenes}}
+                        </div>
+                        <div class="results" ng-if="results.totalCocina != 0">
+                            <div class="results_header"><span class="glyphicon glyphicon-cutlery"></span> </div>
+                            {{results.totalCocina | currency}}
+                        </div>
+                        <div class="results" ng-if="results.totalBar != 0">
+                            <div class="results_header"><span class="glyphicon glyphicon-glass"></span></div>
+                            {{results.totalBar | currency}}
+                        </div>
+                        <div ng-if="producto.text == 'Todos'" style="display:inline-block;">
+                            <div class="results" ng-if="results.total != 0">
+                                <div class="results_header"><span class="glyphicon glyphicon-usd"></span></div>
+                                <span class="total">{{results.total | currency}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive" ng-if="loading == false" style="overflow-y:scroll;height:300px;">
+                    <div class="well" ng-if="results.total">
+                        <table class="table .table-striped">
+                            <thead>
+                                <td><b>Orden ID</b></td>
+                                <td><b>Detalles</b></td>
+                                <td><b>Total</b></td>
+                                <td><b>Ver</b></td>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="orden in ordenes track by $index | limitTo:100 ">
+                                    <td>{{orden.orden_id}}</td>
+                                    <td>{{orden.fecha | date: 'dd-MM-yyyy'}}</td>
+                                    <td>{{orden.total | currency : "$" : 0 }}</td>
+                                    <td><button ng-click="ver(orden)" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+                                    <!-- <button ng-click="delete(orden)" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span></button> --></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--                 <div class="well" ng-if="results.total">
+                    <h3>Resultados:</h3>
+                    <hr>
+                    <h4 style="color:blue;">{{producto.text}}</h4>
+                    <div>Cantidad de Ventas: {{results.totalOrdenesConProducto}}</div>
+                    <div>Total en Ventas: {{results.totalSingleProduct | currency}}</div>
+                    <div></div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+<footer></footer>
+
+<script type="text/ng-template" id="verOrden.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Detalles de orden # {{orden.orden_id}}</h3>
+    </div>
+    <div class="modal-body">
+      <div><b>Orden ingresada por:</b> {{orden.usuario.name}}</div>
+      <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
+      <div><b>Tipo de orden:</b> {{orden.tipo}}</div>
+      <div><b>Mesa:</b> {{orden.mesa}}</div>
+      <hr>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <th class="text-left">Pagado</th>
+            <th>Cantidad</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th class="text-center">Servido</td>
+          </thead>
+          <tr ng-repeat="producto in orden.productos">
+            <td class="text-left"><span ng-if="producto.pagado == false">{{showPagados(producto)}}</span><span ng-if="producto.pagado == true"  class="glyphicon glyphicon-ok"></span></td>
+            <td>{{producto.cantidad}}</td>
+            <td>{{producto.name}}</td>
+            <td>{{producto.precio * producto.cantidad | currency }}</td>
+            <td ng-if="producto.servido == true" class="text-center"><span class="glyphicon glyphicon-ok"></span></td>
+          </tr>
+        </table>
+      </div>
+      <hr>
+      <div class="precioModal text-center"><b>Total:</b> {{calculateTotal()  | currency}}<hr><b>Por pagar:</b> {{calculatePendiente()  | currency}}</div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="deleteOrden.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Borrar Orden: # {{orden.orden_id}}</h3>
+    </div>    
+    <div class="modal-body">
+      <p><b>Esta seguro que desea borrar la orden #: {{orden.orden_id}}?</b></p>
+      <h4>Observación:</h4>
+      <textarea class="form-control" ng-model="observacion"></textarea>
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+        <button class="btn-lg btn-danger" type="button" ng-if="observacion != ''" ng-click="borrar()">Borrar</button>
+        </div>
+    </div>
+</script>

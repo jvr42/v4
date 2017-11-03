@@ -1,0 +1,10 @@
+node_modules
+public
+.tmp
+.idea
+client/bower_components
+dist
+/server/config/local.env.js
+npm-debug.log
+RESPALDO 25-07-2017
+Respaldo 26-09-2017

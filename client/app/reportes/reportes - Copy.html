@@ -1,0 +1,141 @@
+<navbar></navbar>
+<div class="container">
+  <h3 class="text-center">REPORTES</h3>
+  <hr>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12 col-xs-12">
+				<label>Usuario: </label>
+				<select ng-model="user" class="form-control" ng-change="search()">
+					<option value="todos">Todos</option>
+					<option ng-repeat="usuario in usuarios" value="{{usuario.name}}">{{usuario.name}}</option>
+				</select>
+			</div>
+		</div>
+	  <div class="row">	  
+	    <div class="col-lg-12 col-xs-12">
+	    <Br>
+<!-- 	    <label>Producto: </label>
+	      <select ng-model="productoField" class="form-control" ng-change="search()">
+	        <option value="todos">Todos</option>
+	        <option ng-repeat="producto in productos" value="{{producto.name}}">{{producto.name}}</option>
+	      </select> -->
+		<div class="panel panel-default">
+		  <div class="panel-heading text-center">
+		    <input type="text" ng-model="productoField" ng-change="search()" class="form-control" style="height:55px;font-size:26px;" />
+		  </div>
+		  <div class="panel-body">
+		    <div class="container-fluid">
+		      <div class="row">
+		        <div style="margin-bottom:10px;padding-top:10px;padding-bottom:10px;font-size:24px;white-space: normal;" ng-repeat="producto in productos | filter:productoField" ng-click="change(producto.name)" class="col-lg-12 col-xs-12 btn btn-default">{{producto.name}}</div>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-lg-6 col-xs-6">
+	    <br>
+	      <label>Desde: </label>
+	      <p class="input-group">
+	        <input type="text" datepicker-popup="{{format}}" ng-change="search()" ng-model="desde" is-open="desde.status.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Cerrar" class="form-control"/><span class="input-group-btn">
+	          <button type="button" name="desde" ng-click="open($event)" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button></span>
+	      </p>
+	      <input type="text" ng-model="desdeTime" class="form-control"/>
+	    </div>
+	    <div class="col-lg-6 col-xs-6">
+	      <br>
+	      <label>Hasta: </label>
+	      <p class="input-group">
+	        <input type="text" datepicker-popup="{{format}}" ng-change="search()" ng-model="hasta" is-open="hasta.status.opened" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Cerrar" class="form-control"/><span class="input-group-btn">
+	          <button type="button" name="hasta" ng-click="open($event)" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button></span>
+	      </p>
+	      <input type="text" ng-model="hastaTime" class="form-control"/>
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-lg-12 col-xs-12 text-right"><br/>
+	      <button ng-click="search()" class="btn-lg btn-danger" disabled="disabled" ng-if="cargando == true">CARGANDO ORDENES...</button>
+	      <button ng-click="search()" class="btn-lg btn-success" ng-if="cargando == false">GENERAR REPORTE</button>
+	    </div>
+	  </div>
+	</div>
+	<div class="panel-body">
+	  <div class="container-fluid" style="font-size:18px;">
+	    <div class="row">
+	      <div ng-if="cocinaTotal" class="col-xs-12 col-lg-12 text-left">Ventas en productos de Cocina: <b>{{ cocinaTotal | currency }}</b></div>
+	    </div>
+	    <div class="row">
+	      <div ng-if="barTotal &gt; 0" class="col-xs-12 col-lg-12 text-left">Ventas en productos de Bar:  <b>{{ barTotal | currency }}</b></div>
+	    </div>
+	    <hr>
+	    <div class="row">
+	      <div ng-if="barTotal &gt; 0" class="col-xs-12 col-lg-12 text-left">Venta Total del Local:  <b>{{ barTotal + cocinaTotal | currency }}</b></div><br/><br/>
+	    </div>
+	    <div class="row">
+	    	<div ng-if="cantidadTotalProducto &gt; 0">
+		    	{{productoField}}: {{cantidadTotalProducto}} vendido(s)<br>
+		    	Total producto vendido: {{productoTotal | currency }}
+		    	<br><br>
+	    	</div>
+	    </div>
+	    <div class="row">
+          <div ng-repeat="orden in ordenes |  filter:busqueda" class="col-lg-6 col-lg-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <div class="container-fluid">
+                  <div class="row" style="font-size:26px;">
+                    <div class="col-lg-4 col-xs-4 text-left"># {{orden.orden_id}}</div>
+                    <div class="col-lg-4 col-xs-4 text-center">{{orden.mesa}}</div>
+                    <div class="col-lg-4 col-xs-4 text-right">{{productCount(orden)}}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                  <div class="container-fluid text-center">
+                  <button aria-hidden="true" ng-click="ver(orden)" style="font-size: 30px;" class="btn-lg btn-primary glyphicon glyphicon-search"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+	    </div>
+	  </div>
+	</div>
+</div>
+<footer></footer>
+
+<script type="text/ng-template" id="verOrden.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Detalles de orden # {{orden.orden_id}}</h3>
+    </div>
+    <div class="modal-body">
+      <div><b>Orden ingresada por:</b> {{orden.usuario.name}}</div>
+      <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
+      <div><b>Tipo de orden:</b> {{orden.tipo}}</div>
+      <div><b>Mesa:</b> {{orden.mesa}}</div>
+      <hr>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <th>Cantidad</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th class="text-center">Servido</td>
+          </thead>
+          <tr ng-repeat="producto in orden.productos">
+  
+            <td>{{producto.cantidad}}</td>
+            <td>{{producto.name}}</td>
+            <td>{{producto.precio * producto.cantidad | currency }}</td>
+            <td ng-if="producto.servido == true" class="text-center"><span class="glyphicon glyphicon-ok"></span></td>
+          </tr>
+        </table>
+      </div>
+      <hr>
+      <div class="text-center"><b>Total:</b> {{calculateTotal()  | currency}}</div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

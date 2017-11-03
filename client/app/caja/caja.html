@@ -1,0 +1,311 @@
+<navbar></navbar>
+<div class="container">
+  <h3 class="text-center">CAJA - ({{totalOrdenes}})</h3>
+  <hr>
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <select ng-model="busqueda.usuario.name" class="form-control">
+            <option value="">TODOS</option>
+            <option ng-repeat="usuario in usuarios" value="{{usuario.name}}">{{usuario.name}}</option>
+          </select>
+          <input type="text" ng-model="busqueda.orden_id" style="height:55px;font-size:26px;" class="form-control" />
+        </div>
+        <div class="panel-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div ng-repeat="orden in ordenes |  filter:busqueda" ng-if="abierta(orden)" class="col-lg-6 col-lg-12">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <div class="container-fluid">
+                      <div class="row" style="font-size:24px;">
+                        <div class="col-lg-3 col-xs-3 text-left"># {{orden.orden_id}}</div>
+                        <div class="col-lg-6 col-xs-6 text-center">{{orden.usuario.name}} - {{orden.mesa}}</div>
+                        <div class="col-lg-3 col-xs-3 text-right">{{productCount(orden)}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel-body">
+                    <div class="container-fluid">
+                      <button aria-hidden="true" ng-click="edit(orden._id)" style="font-size: 30px;" class="btn-lg btn-success glyphicon glyphicon-pencil"></button>
+                      <button aria-hidden="true" ng-click="ver(orden)" style="font-size: 30px;" class="btn-lg btn-primary glyphicon glyphicon-search"></button>
+                      <button aria-hidden="true" ng-click="delete(orden)" ng-if="orden.status != 'Borrado'" style="font-size: 30px;" class="btn-lg btn-danger glyphicon glyphicon-remove"></button>
+                      <button aria-hidden="true" ng-click="pay(orden)" ng-if="orden.status != 'Borrado'" style="font-size: 30px;" class="btn-lg btn-success glyphicon glyphicon-usd"></button>
+                      <button aria-hidden="true" ng-click="divide(orden)" ng-if="orden.status != 'Borrado'" style="font-size: 30px;" class="btn-lg btn-success glyphicon glyphicon-th-list"></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<footer></footer>
+<script type="text/ng-template" id="verOrden.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Detalles de orden # {{orden.orden_id}}</h3>
+  </div>
+  <div class="modal-body">
+  <div class="row">
+  	<div class="col-lg-6">
+     <div><b>Orden ingresada por:</b> {{orden.usuario.name}}</div>
+    <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
+    <div><b>Tipo de orden:</b> {{orden.tipo}}</div>
+    <div><b>Mesa:</b> {{orden.mesa}}</div> 		
+  	</div>
+  	<div class="col-lg-6 text-center">
+  		<button class="btn btn-primary" type="button" ng-click="print(orden._id)"><span class="glyphicon glyphicon-print"></span> Imprimir</button>
+  	</div>
+  </div>
+
+    <hr>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <th class="text-left">Pagado</th>
+          <th>Cantidad</th>
+          <th>Producto</th>
+          <th>Precio</th>
+          <th class="text-center">Servido</td>
+        </thead>
+        <tr ng-repeat="producto in orden.productos">
+          <td class="text-left"><span ng-if="producto.pagado == false">{{showPagados(producto)}}</span><span ng-if="producto.pagado == true" class="glyphicon glyphicon-ok"></span></td>
+          <td>{{producto.cantidad}}</td>
+          <td>{{producto.name}}</td>
+          <td>{{producto.precio * producto.cantidad | currency }}</td>
+          <td ng-if="producto.servido == true" class="text-center"><span class="glyphicon glyphicon-ok"></span></td>
+        </tr>
+      </table>
+    </div>
+    <hr>
+    <div class="precioModal text-center"><b>Total:</b> {{calculateTotal() | currency}}
+      <hr><b>Por pagar:</b> {{calculatePendiente() | currency}}</div>
+    <hr>
+    <div><b>Historial de Modificaciones:</b></div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <th>Fecha</th>
+          <th>Observacion</th>
+          <th>Producto</th>
+        </thead>
+        <tr ng-repeat="o in orden.observaciones">
+          <td class="text-left">{{o.fecha | date : 'd-M-yyyy - h:mm:ss a'}}</td>
+          <td class="text-left">{{o.observacion}}</td>
+          <td class="text-left">{{o.producto.name}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">    
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+  </div>
+</script>
+<script type="text/ng-template" id="payOrden.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Pagar orden # {{orden.orden_id}}</h3>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid">
+      <div><b>Orden ingresada por:</b> {{orden.usuario.name}}</div>
+      <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
+      <div><b>Tipo de orden:</b> {{orden.tipo}}</div>
+      <div><b>Mesa:</b> {{orden.mesa}}</div>
+      <hr>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <th class="text-left">Pagado</th>
+            <th>Cantidad</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th class="text-center">Servido</td>
+          </thead>
+          <tr ng-repeat="producto in orden.productos">
+            <td class="text-left"><span ng-if="producto.pagado == false">{{showPagados(producto)}}</span><span ng-if="producto.pagado == true" class="glyphicon glyphicon-ok"></span></td>
+            <td>{{producto.cantidad}}</td>
+            <td>{{producto.name}}</td>
+            <td>{{producto.precio * producto.cantidad | currency }}</td>
+            <td ng-if="producto.servido == true" class="text-center"><span class="glyphicon glyphicon-ok"></span></td>
+          </tr>
+        </table>
+        <hr>
+      </div>
+      <div class="precioModal text-right">
+        <div class="row">
+          <div class="col-lg-6 col-xs-6 text-left"><b>Por pagar:</b> {{calculatePendiente() | currency}}</div>
+          <div class="col-lg-6 col-xs-6"><b>Total:</b> {{calculatePendiente() | currency}}</div>
+        </div>
+        <div ng-if="propina == true"><b>Propina:</b> {{ totalPropina | currency }}</div>
+        <div ng-if="propina == true"><b>Total mas Propina:</b> {{ totalWithPropina | currency }}</div>
+        <div ng-if="descuento != 0"><b>Descuento ({{descuento}}%):</b> {{ totalDescuento | currency }}</div>
+        <div ng-if="descuento != 0"><b>TOTAL:</b> {{ totalMenosDescuento | currency }}</div>
+        <hr>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12 col-xs-12 text-center">
+          <select class="form-control" ng-model="descuento" ng-change="aplicarDescuento(descuento)">
+            <option value="0">-- SIN DESCUENTO --</option>
+            <option value="5">5%</option>
+            <option value="10">10%</option>
+            <option value="15">15%</option>
+            <option value="20">20%</option>
+          </select>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-lg-12 col-xs-12 text-center">
+          <input type="text" ng-model="data.ingreso" class="form-control" placeholder="calcular vuelto..." />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 col-xs-12 text-right">
+          <br>
+          <label ng-if="data.ingreso > calculatePendiente()" class="precioModal">
+            Vuelto: {{data.ingreso - calculatePendiente() - totalPropina | currency}}
+          </label>
+        </div>
+      </div>
+      <hr/>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 col-xs-12 text-right">
+            <select ng-model="tipoPago" class="form-control">
+              <option value="efectivo">Efectivo</option>
+              <option value="debito">Debito</option>
+              <option value="credito">Credito</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <hr/>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-3 col-xs-3 text-right">
+            <label class="precioModal"><b>Propina:</b></label>
+          </div>
+          <div class="col-lg-9 col-xs-9 text-center">
+            <input type="text" ng-model="propinaPagada" class="form-control" />
+          </div>
+        </div>
+      </div>
+      <hr/>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-3 col-xs-3 text-right">
+            <label class="precioModal"><b># Boleta:</b></label>
+          </div>
+          <div class="col-lg-9 col-xs-9">
+            <input type="text" ng-model="numeroBoleta" class="form-control" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="row">
+      <div class="col-lg-6 col-xs-6 text-left">
+        <button class="btn-lg btn-warning" type="button" ng-click="cerrar()">CERRAR</button>
+      </div>
+      <div class="col-lg-6 col-xs-6">
+        <button class="btn-lg btn-success" type="button" ng-click="pagar()">PAGAR</button>
+      </div>
+    </div>
+  </div>
+</script>
+<script type="text/ng-template" id="divideOrden.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Dividir Cuenta # {{o.orden_id}}</h3>
+  </div>
+  <div class="modal-body">
+    <div><b>Orden ingresada por:</b> {{o.usuario.name}}</div>
+    <div><b>Fecha:</b> {{ o.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
+    <div><b>Tipo de orden:</b> {{o.tipo}}</div>
+    <div><b>Mesa:</b> {{o.mesa}}</div>
+    <hr>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <th>Por Pagar</th>
+          <th>Producto</th>
+          <th>Precio</th>
+          <th>Pagar</th>
+        </thead>
+        <tr ng-repeat="producto in o.productos">
+          <td>{{producto.cantidad - producto.pagados}}</td>
+          <td>{{producto.name}}</td>
+          <td>{{producto.precio | currency }}</td>
+          <td>
+            <button class="btn btn-success" ng-click="pagar(producto)" ng-if="producto.pagados - producto.cantidad">
+              <span class="glyphicon glyphicon-plus"></span>
+            </button>
+            <button class="btn btn-danger" ng-click="revertir(producto)" ng-if="checkSubticket(producto)">
+              <span class="glyphicon glyphicon-minus"></span>
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <hr>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <th>Cantidad</th>
+          <th>Producto</th>
+          <th>Precio</th>
+        </thead>
+        <tr ng-repeat="item in subticket">
+          <td>{{item.cantidad}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.precio * item.cantidad | currency }}</td>
+        </tr>
+      </table>
+    </div>
+    <hr>
+    <div class="precioModal text-center"><b>Total Subcuenta:</b> {{calculateTotal() | currency}}</div>
+    <div class="precioModal text-center"><b>Propina:</b> {{propina = calculateTotal() * 0.10 | currency}}</div>
+    <div class="precioModal text-center"><b>Total mas Propina:</b> {{ calculateTotal() + propina | currency }}</div>
+    <hr>
+    <div class="row">
+      <div class="col-lg-12 col-xs-12 text-center">
+        <input type="text" ng-model="data.ingreso" class="form-control" placeholder="Vuelto" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-xs-12 text-right">
+        <br>
+        <label ng-if="data.ingreso > calculateTotal()" class="precioModal">
+          Vuelto: {{data.ingreso - calculateTotal() - propina | currency}}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="text-center">
+      <button class="btn-lg btn-warning" type="button" ng-click="cerrar()">CERRAR</button>
+    </div>
+  </div>
+</script>
+<script type="text/ng-template" id="deleteOrden.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Borrar Orden: # {{orden.orden_id}}</h3>
+  </div>
+  <div class="modal-body">
+    <p><b>Esta seguro que desea borrar la orden #: {{orden.orden_id}}?</b></p>
+    <h4>Observación:</h4>
+    <textarea class="form-control" ng-model="observacion"></textarea>
+  </div>
+  <div class="modal-footer">
+    <div class="text-center">
+      <button class="btn-lg btn-danger" type="button" ng-if="observacion != ''" ng-click="borrar()">Borrar</button>
+    </div>
+  </div>
+</script>

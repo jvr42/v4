@@ -1,0 +1,23 @@
+.results{
+	font-size: 20px;
+	border:solid 1px lightgray;
+	display: inline-block;
+	padding: 10px;
+	margin:5px;
+	-webkit-box-shadow: 3px 3px 7px -3px rgba(0,0,0,0.45);
+/*	/-moz-box-shadow: 7px 7px 8px -6px rgba(0,0,0,0.45);
+	box-shadow: 7px 7px 8px -6px rgba(0,0,0,0.45);*/
+}
+
+.total{
+	color:;
+}
+
+
+.results_header{
+	color:black;
+	padding: 0px;
+	text-align: center;
+	font-size: 40pt;
+	color:;
+}
