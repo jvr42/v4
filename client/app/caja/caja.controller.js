@@ -209,7 +209,7 @@ angular.module('posApp')
 
   $scope.aplicarDescuento = function(porcentaje){
     $scope.totalDescuento = Math.ceil(($scope.calculatePendiente()) * (porcentaje / 100)) ;
-    $scope.totalMenosDescuento = $scope.calculatePendiente() - $scope.totalDescuento;
+    $scope.totalMenosDescuento = $scope.calculatePendiente() - $scope.totalDescuento + $scope.totalPropina;
     console.log($scope); 
   }
 

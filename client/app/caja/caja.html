@@ -141,8 +141,8 @@
           <div class="col-lg-6 col-xs-6 text-left"><b>Por pagar:</b> {{calculatePendiente() | currency}}</div>
           <div class="col-lg-6 col-xs-6"><b>Total:</b> {{calculatePendiente() | currency}}</div>
         </div>
-        <div ng-if="propina == true"><b>Propina:</b> {{ totalPropina | currency }}</div>
-        <div ng-if="propina == true"><b>Total mas Propina:</b> {{ totalWithPropina | currency }}</div>
+        <!-- <div ng-if="propina == true"><b>Propina:</b> {{ totalPropina | currency }}</div> -->
+        <div ng-if="propina == true"><b>Total mas Propina:</b> {{ totalWithPropina | currency }}</div>        
         <div ng-if="descuento != 0"><b>Descuento ({{descuento}}%):</b> {{ totalDescuento | currency }}</div>
         <div ng-if="descuento != 0"><b>TOTAL:</b> {{ totalMenosDescuento | currency }}</div>
         <hr>
@@ -186,7 +186,7 @@
           </div>
         </div>
       </div>
-      <hr/>
+<!--       <hr/>
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-3 col-xs-3 text-right">
@@ -196,7 +196,7 @@
             <input type="text" ng-model="propinaPagada" class="form-control" />
           </div>
         </div>
-      </div>
+      </div> -->
       <hr/>
       <div class="container-fluid">
         <div class="row">

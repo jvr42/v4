@@ -10,14 +10,19 @@ angular.module('posApp')
     });
 
     $scope.ticket = [];
+    $scope.u = Auth.getCurrentUser();
+
+    $http.get('/api/users').success(function(data) {
+      $scope.usuarios = data;
+    });
 
     $scope.orden_id = $stateParams.id;
-    $scope.userRole = Auth.getCurrentUser().role;
 
     $scope.data = {
       tipo: 'servir',
       mesa: 't 1',
-      orden_id: ''
+      u: $scope.u,
+      role: $scope.u.role
     };
 
     $http.get('/api/ordenes/' + $scope.orden_id).then(function(response) {
@@ -27,6 +32,7 @@ angular.module('posApp')
       $scope.data.orden_id = $scope.orden.orden_id;
       $scope.data.tipo = $scope.orden.tipo;
       $scope.data.mesa = $scope.orden.mesa;
+      $scope.data.u = $scope.orden.usuario;
     });
 
     $http.get('/api/productos').then(function(response) {
@@ -49,6 +55,11 @@ angular.module('posApp')
       });
     };
 
+    $scope.deleteMesero = function(item) {
+      $scope.deleteItem(item);
+      Orden.update({id: $scope.orden._id}, $scope.orden);
+    }
+
 
     $scope.mostrarObservacion = function(item) {
       if (item.showObservacion)
@@ -58,14 +69,13 @@ angular.module('posApp')
     }
 
     $scope.updateTicket = function() {
-
-      if ($scope.ticket.length != 0 && $scope.tipo != "") {
+      if ($scope.ticket.length != 0 && $scope.orden.tipo != "") {
         var orden = {};
-        var user = Auth.getCurrentUser();
 
+        orden.usuario = $scope.data.u;
         orden.fechaEditado = new Date().getTime();
         orden.status = 'abierta';
-        orden.ultimoEditor = user;
+        orden.ultimoEditor = $scope.u;
         orden.tipo = $scope.data.tipo;
         orden.mesa = $scope.data.mesa;
         orden.productos = $scope.ticket;
