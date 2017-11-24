@@ -51,18 +51,17 @@
     <h3 class="modal-title">Detalles de orden # {{orden.orden_id}}</h3>
   </div>
   <div class="modal-body">
-  <div class="row">
-  	<div class="col-lg-6">
-     <div><b>Orden ingresada por:</b> {{orden.usuario.name}}</div>
-    <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
-    <div><b>Tipo de orden:</b> {{orden.tipo}}</div>
-    <div><b>Mesa:</b> {{orden.mesa}}</div> 		
-  	</div>
-  	<div class="col-lg-6 text-center">
-  		<button class="btn btn-primary" type="button" ng-click="print(orden._id)"><span class="glyphicon glyphicon-print"></span> Imprimir</button>
-  	</div>
-  </div>
-
+    <div class="row">
+      <div class="col-lg-6">
+        <div><b>Orden ingresada por:</b> {{orden.usuario.name}}</div>
+        <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
+        <div><b>Tipo de orden:</b> {{orden.tipo}}</div>
+        <div><b>Mesa:</b> {{orden.mesa}}</div>
+      </div>
+      <div class="col-lg-6 text-center">
+        <button class="btn btn-primary" type="button" ng-click="print(orden._id)"><span class="glyphicon glyphicon-print"></span> Imprimir</button>
+      </div>
+    </div>
     <hr>
     <div class="table-responsive">
       <table class="table">
@@ -102,7 +101,7 @@
       </table>
     </div>
   </div>
-  <div class="modal-footer">    
+  <div class="modal-footer">
     <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
   </div>
 </script>
@@ -112,10 +111,18 @@
   </div>
   <div class="modal-body">
     <div class="container-fluid">
-      <div><b>Orden ingresada por:</b> {{orden.usuario.name}}</div>
-      <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
-      <div><b>Tipo de orden:</b> {{orden.tipo}}</div>
-      <div><b>Mesa:</b> {{orden.mesa}}</div>
+      <div class="row">
+        <div class="col-lg-5">
+          <div><b>Orden ingresada por:</b> {{orden.usuario.name}}</div>
+          <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
+          <div><b>Tipo de orden:</b> {{orden.tipo}}</div>
+          <div><b>Mesa:</b> {{orden.mesa}}</div>
+        </div>
+        <div class="col-lg-7">
+          <span><b>Observaci&oacute;n:</b></span>
+          <textarea class="form-control" ng-model="observacion_pedido" placeholder="Sin Observaciones"></textarea>          
+        </div>
+      </div>
       <hr>
       <div class="table-responsive">
         <table class="table">
@@ -142,7 +149,7 @@
           <div class="col-lg-6 col-xs-6"><b>Total:</b> {{calculatePendiente() | currency}}</div>
         </div>
         <!-- <div ng-if="propina == true"><b>Propina:</b> {{ totalPropina | currency }}</div> -->
-        <div ng-if="propina == true"><b>Total mas Propina:</b> {{ totalWithPropina | currency }}</div>        
+        <div ng-if="propina == true"><b>Total mas Propina:</b> {{ totalWithPropina | currency }}</div>
         <div ng-if="descuento != 0"><b>Descuento ({{descuento}}%):</b> {{ totalDescuento | currency }}</div>
         <div ng-if="descuento != 0"><b>TOTAL:</b> {{ totalMenosDescuento | currency }}</div>
         <hr>
@@ -186,7 +193,7 @@
           </div>
         </div>
       </div>
-<!--       <hr/>
+      <!--       <hr/>
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-3 col-xs-3 text-right">

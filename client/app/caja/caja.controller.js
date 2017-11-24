@@ -171,6 +171,7 @@ angular.module('posApp')
   $scope.propinaclass = 'success';
   $scope.totalPropina = 0;
   $scope.descuento = "0";
+  $scope.observacion_pedido = "";
 
   $scope.calculateTotal = function(){
         var total = 0;
@@ -183,6 +184,8 @@ angular.module('posApp')
 
         return total;
   }
+
+  $scope.calculateTotal()
 
   $scope.calculatePendiente = function(){
         var total = 0;
@@ -200,8 +203,6 @@ angular.module('posApp')
         return total - totalProductosPagos;
   }
 
-  
-
   $scope.aplicarPropina = function(){    
     $scope.totalPropina = $scope.calculatePendiente() * 0.10;
     $scope.totalWithPropina = $scope.totalPropina + $scope.calculatePendiente();
@@ -210,23 +211,11 @@ angular.module('posApp')
   $scope.aplicarDescuento = function(porcentaje){
     $scope.totalDescuento = Math.ceil(($scope.calculatePendiente()) * (porcentaje / 100)) ;
     $scope.totalMenosDescuento = $scope.calculatePendiente() - $scope.totalDescuento + $scope.totalPropina;
-    console.log($scope); 
   }
 
   $scope.propina = true;
+  
   $scope.aplicarPropina();
-
-/*  $scope.propinaToggle = function(){
-    if ($scope.propina == true){
-      $scope.propinaclass = 'success';
-      $scope.propina = false;
-      $scope.totalPropina = 0; 
-    }
-    else{
-      $scope.propinaclass = 'danger';
-      $scope.propina = true;
-    }
-  }*/
 
   $scope.showPagados = function(producto) {
     return producto.pagados + " / " + producto.cantidad; 
@@ -242,6 +231,7 @@ angular.module('posApp')
     $scope.orden.fechaCierre = new Date().getTime();
     $scope.orden.numeroBoleta = $scope.numeroBoleta;
     $scope.orden.tipoPago = $scope.tipoPago;
+    $scope.orden.observacion_pedido = $scope.observacion_pedido;
 
     for(var i=0; i<$scope.orden.productos.length;i++)
     {
@@ -250,8 +240,6 @@ angular.module('posApp')
     }
 
     $scope.orden.status = 'cerrada';
-
-    //console.log($scope.orden);
 
     Orden.update({id: $scope.orden._id},$scope.orden); 
 
