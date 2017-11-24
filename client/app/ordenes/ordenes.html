@@ -18,7 +18,7 @@
                       <div class="row" style="font-size:26px;">
                         <div class="col-lg-4 col-xs-4 text-left"># {{orden.orden_id}}</div>
                         <div class="col-lg-4 col-xs-4 text-center">{{orden.mesa}}</div>
-                        <div class="col-lg-4 col-xs-4 text-right">{{productCount(orden)}}</div>
+                        <div class="col-lg-4 col-xs-4 text-right" ng-bind-html="productCount(orden)"></div>
                       </div>
                     </div>
                   </div>
