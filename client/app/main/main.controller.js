@@ -43,6 +43,9 @@ angular.module('posApp')
           var selectedUser = data;
 
           Counter.query(function(data) {
+
+            console.log(data)
+
             $scope.CounterObjectId = data[0]._id;
             $scope.currentOrdenId = data[0].orden_id;
             $scope.orden_id = $scope.currentOrdenId + 1;
