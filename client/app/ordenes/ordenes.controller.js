@@ -16,7 +16,7 @@ angular.module('posApp')
           var index = $scope.ordenes.indexOf(dropItem);
           $scope.ordenes.splice(index,1);
         }
-        if (item.status == "cerrada"){
+        if (item.status == "cerrada" || item.status == "Borrado"){
           var dropItem = _.find($scope.ordenes, {_id: item._id});
           var index = $scope.ordenes.indexOf(dropItem);
           $scope.ordenes.splice(index,1);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('posApp')
-    .controller('CocinaCtrl', function($scope, $http, socket, Orden, Auth, $state, $interval) {
+    .controller('CocinaCtrl', function($scope, $http, socket, Orden, message, Auth, $state, $interval) {
 
         moment.locale("es")
 
@@ -18,6 +18,16 @@ angular.module('posApp')
 
         $scope.listo = function(o, p) {
             _.find(o.productos, { _id: p._id }).servido = true;
+            
+            var m = new message({
+                usuario: o.usuario,
+                producto: p,
+                createdOn: new Date().getTime(),
+                read: false
+            });
+
+            m.$save();
+
             Orden.update({ id: o._id }, o);
         }
 
