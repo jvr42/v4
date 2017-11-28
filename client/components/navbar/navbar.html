@@ -12,13 +12,24 @@
     <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">
         <li ng-repeat="item in menu" ui-sref-active="active">
-            <a ng-show="isLoggedIn()" ng-if="check(item.auth, getRole())" ui-sref="{{item.state}}">{{item.title}}</a>
+          <a ng-show="isLoggedIn()" ng-if="check(item.auth, getRole())" ui-sref="{{item.state}}">{{item.title}}</a>
+        </li>
+        <li dropdown on-toggle="toggled(open)" ng-if="!isAdmin()">
+          <a class="nav-bar" href id="simple-dropdown" dropdown-toggle>
+            Mensajes
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
+            <li ng-repeat="mensaje in mensajes">
+              <a href>{{mensaje.producto.name}} Esta listo para servir</a>
+            </li>
+          </ul>
         </li>
       </ul>
-
       <ul class="nav navbar-nav navbar-right">
         <li ng-hide="isLoggedIn()" ui-sref-active="active"><a ui-sref="login">Iniciar Sesion</a></li>
-        <li ng-show="isLoggedIn()"><p class="navbar-text">{{ getCurrentUser().name }}</p> </li>
+        <li ng-show="isLoggedIn()">
+          <p class="navbar-text">{{ getCurrentUser().name }}</p>
+        </li>
         <li ng-show="isLoggedIn()"><a ui-sref="logout">Cerrar Sesion</a></li>
       </ul>
     </div>

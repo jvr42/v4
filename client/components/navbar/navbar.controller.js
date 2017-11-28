@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('posApp')
-  .controller('NavbarCtrl', function ($scope, Auth) {
+  .controller('NavbarCtrl', function ($scope, Auth, $http) {
+
     $scope.menu = [
     {
       'title': 'Caja',
@@ -47,7 +48,7 @@ angular.module('posApp')
       'title': 'Configuracion',
       'state': 'config',
       'auth' : [{role: 'administrador'}]
-    },
+    }
     ];
 
     $scope.getRole = Auth.getRole;
@@ -55,6 +56,24 @@ angular.module('posApp')
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
+
+    $http.get('api/messages/user/' + $scope.getCurrentUser().name).then(function(response){
+       $scope.mensajes = response.data
+    })
+
+    $scope.status = {
+      isopen: false
+    };
+
+    $scope.toggled = function(open) {
+      console.log('Dropdown is now: ', open);
+    };
+
+    $scope.toggleDropdown = function($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      $scope.status.isopen = !$scope.status.isopen;
+    };
 
     $scope.check = function(roles,role){
       if(_.find(roles,{role: role})){

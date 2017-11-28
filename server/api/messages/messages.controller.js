@@ -66,6 +66,14 @@ exports.index = function(req, res) {
     .catch(handleError(res));
 };
 
+// Gets a list of Messagess from a single user
+exports.user = function(req, res) {
+  Messages.findAsync({"usuario.name" : req.params.user})
+      .then(handleEntityNotFound(res))
+      .then(responseWithResult(res))
+      .catch(handleError(res));
+};
+
 // Gets a single Messages from the DB
 exports.show = function(req, res) {
   Messages.findByIdAsync(req.params.id)
