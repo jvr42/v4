@@ -8,6 +8,7 @@ var EventEmitter = require('events').EventEmitter;
 var User = require('./user.model');
 var UserEvents = new EventEmitter();
 
+
 // Set max event listeners (0 == unlimited)
 UserEvents.setMaxListeners(0);
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('posApp')
-  .controller('NavbarCtrl', function ($scope, Auth, $http) {
+  .controller('NavbarCtrl', function ($scope, Auth, $http, socket, message) {
 
     $scope.menu = [
     {
@@ -59,6 +59,13 @@ angular.module('posApp')
 
     $http.get('api/messages/user/' + $scope.getCurrentUser().name).then(function(response){
        $scope.mensajes = response.data
+       $scope.mensajes = $scope.mensajes.filter(function(mensaje){
+          if (mensaje.read == false)
+            return true;
+       });       
+
+       socket.syncUpdates('messages', $scope.mensajes);
+
     })
 
     $scope.status = {
@@ -72,8 +79,12 @@ angular.module('posApp')
     $scope.toggleDropdown = function($event) {
       $event.preventDefault();
       $event.stopPropagation();
-      $scope.status.isopen = !$scope.status.isopen;
+      //$scope.status.isopen = !$scope.status.isopen;
     };
+
+    $scope.deleteMensaje = function(mensaje){
+      message.remove({id: mensaje._id});
+    }
 
     $scope.check = function(roles,role){
       if(_.find(roles,{role: role})){

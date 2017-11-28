@@ -3,9 +3,10 @@
     <div class="navbar-header">
       <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
         <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
+        <span ng-if="mensajes.length == 0" class="icon-bar"></span>
+        <span ng-if="mensajes.length == 0" class="icon-bar"></span>
+        <span ng-if="mensajes.length == 0" class="icon-bar"></span>
+        <span class="badge" ng-if="mensajes.length != 0">{{mensajes.length}}</span>
       </button>
       <a class="navbar-brand" style="font-size: 14px;color: black;"><b>Kanguru Beach Bar</b></a>
     </div>
@@ -15,12 +16,18 @@
           <a ng-show="isLoggedIn()" ng-if="check(item.auth, getRole())" ui-sref="{{item.state}}">{{item.title}}</a>
         </li>
         <li dropdown on-toggle="toggled(open)" ng-if="!isAdmin()">
-          <a class="nav-bar" href id="simple-dropdown" dropdown-toggle>
-            Mensajes
+          <a class="nav-bar" id="simple-dropdown" dropdown-toggle>
+            Mensajes <span class="badge" ng-if="mensajes.length != 0">{{mensajes.length}}</span>
           </a>
-          <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
+          <ul class="dropdown-menu">
             <li ng-repeat="mensaje in mensajes">
-              <a href>{{mensaje.producto.name}} Esta listo para servir</a>
+              <div style="padding: 5px 5px 5px 15px; width: 400px;">
+                <div class="row">
+                  <div class="col-xs-10"><b>{{mensaje.producto.name}}</b>: esta listo para servir</div>
+                  <div class="col-xs-2"><button ng-click="deleteMensaje(mensaje)" class="btn-xs btn-success glyphicon glyphicon-ok"></button>
+                  </div>
+                </div>                 
+              </div>
             </li>
           </ul>
         </li>
