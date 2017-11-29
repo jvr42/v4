@@ -19,14 +19,20 @@
                         <div ng-repeat="producto in orden.productos" class="productos">
                             <div ng-if="producto.tipo == 'cocina'" class="container-fluid">
                                 <div class="row" ng-hide="producto.servido == true">
-                                    <div class="col-lg-2 col-xs-2 text-left"><span style="font-size:20px;" class="badge">{{producto.cantidad}}</span></div>
-                                    <div class="col-lg-5 col-xs-5 text-left">
+                                    <div class="col-lg-1 col-xs-1 text-left"><span style="font-size:20px;" class="badge">{{producto.cantidad}}</span></div>
+                                    <div class="col-lg-9 col-xs-9 text-left">
                                         <span style="font-size:20px;" ng-if="producto.servido == false">
-                                            <a ng-click="mostrarObservacion($index, producto)">{{producto.name}}</a> -- {{calculateTime(producto._id)}}
+                                            <div class="row">
+                                                <div class="col-xs-8">
+                                                    <a ng-click="mostrarObservacion($index, producto)">{{producto.name}}</a>
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    {{calculateTime(producto._id)}}
+                                                </div>
+                                            </div>
                                         </span>
-                                        <span style="font-size:20px;text-decoration:line-through" ng-if="producto.servido == true">{{producto.name}}</span>
                                     </div>
-                                    <div class="col-lg-5 col-xs-5 text-right">
+                                    <div class="col-lg-2 col-xs-2 text-right">
                                         <button aria-hidden="true" ng-click="listo(orden, producto)" class="btn btn-success glyphicon glyphicon-ok"></button>
                                     </div>
                                 </div>

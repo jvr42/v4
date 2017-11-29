@@ -6,7 +6,7 @@
         <span ng-if="mensajes.length == 0" class="icon-bar"></span>
         <span ng-if="mensajes.length == 0" class="icon-bar"></span>
         <span ng-if="mensajes.length == 0" class="icon-bar"></span>
-        <span class="badge" ng-if="mensajes.length != 0">{{mensajes.length}}</span>
+        <span  style="font-size: 14px;" class="badge bg-success" ng-if="mensajes.length != 0 && !isAdmin()">{{mensajes.length}}</span>
       </button>
       <a class="navbar-brand" style="font-size: 14px;color: black;"><b>Kanguru Beach Bar</b></a>
     </div>
@@ -15,16 +15,17 @@
         <li ng-repeat="item in menu" ui-sref-active="active">
           <a ng-show="isLoggedIn()" ng-if="check(item.auth, getRole())" ui-sref="{{item.state}}">{{item.title}}</a>
         </li>
-        <li dropdown on-toggle="toggled(open)" ng-if="!isAdmin()">
+        <li dropdown auto-close="disabled" on-toggle="toggled(open)" ng-if="!isAdmin()">
           <a class="nav-bar" id="simple-dropdown" dropdown-toggle>
-            Mensajes <span class="badge" ng-if="mensajes.length != 0">{{mensajes.length}}</span>
+            Mensajes <span style="font-size: 14px;" class="badge bg-success" ng-if="mensajes.length != 0">{{mensajes.length}}</span>
           </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu" ng-if="mensajes.length != 0">
+            <div style="background-color:#3377FF; margin: 0px; padding: 10px; text-align: center; color: white"><b>Productos Listos para entregar</b></div>
             <li ng-repeat="mensaje in mensajes">
               <div style="padding: 5px 5px 5px 15px; width: 400px;">
                 <div class="row">
-                  <div class="col-xs-10"><b>{{mensaje.producto.name}}</b>: esta listo para servir</div>
-                  <div class="col-xs-2"><button ng-click="deleteMensaje(mensaje)" class="btn-xs btn-success glyphicon glyphicon-ok"></button>
+                  <div class="col-xs-9"><b>{{mensaje.producto.name}}</b><br>Orden #: <b>{{mensaje.orden_id}}</b>, Mesa: <b>{{mensaje.mesa}}</b>, a las: <b>{{mensaje.createdOn | date: 'h:mm a'}}</b></div>
+                  <div class="col-xs-3"><button ng-click="deleteMensaje(mensaje)" class="btn-xs btn-success glyphicon glyphicon-ok"></button>
                   </div>
                 </div>                 
               </div>

@@ -5,6 +5,8 @@ var Schema = mongoose.Schema;
 
 
 var MessagesSchema = new Schema({
+  orden_id: Number,
+  mesa: String,
   usuario: {
     name: String,
     rut: String,

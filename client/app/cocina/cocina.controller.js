@@ -20,6 +20,8 @@ angular.module('posApp')
             _.find(o.productos, { _id: p._id }).servido = true;
             
             var m = new message({
+                orden_id: o.orden_id,
+                mesa: o.mesa,
                 usuario: o.usuario,
                 producto: p,
                 createdOn: new Date().getTime(),

@@ -139,6 +139,7 @@ angular.module('posApp')
       $scope.deleteItem(item);
 
       var OBSERVACION = {
+        usuario: Auth.getCurrentUser().name,
         producto: item,
         observacion: observacion,
         fecha: new Date().getTime()

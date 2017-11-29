@@ -85,20 +85,20 @@
     <div class="precioModal text-center"><b>Total:</b> {{calculateTotal() | currency}}
       <hr><b>Por pagar:</b> {{calculatePendiente() | currency}}</div>
     <hr>
-    <div><b>Historial de Modificaciones:</b></div>
+    <div><h4><u>Historial de Modificaciones:</u></h4></div>
     <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <th>Fecha</th>
-          <th>Observacion</th>
-          <th>Producto</th>
-        </thead>
-        <tr ng-repeat="o in orden.observaciones">
-          <td class="text-left">{{o.fecha | date : 'd-M-yyyy - h:mm:ss a'}}</td>
-          <td class="text-left">{{o.observacion}}</td>
-          <td class="text-left">{{o.producto.name}}</td>
-        </tr>
-      </table>
+      <div ng-repeat="o in orden.observaciones">
+        <div class="row">
+            <div class="col-lg-12"><b>Producto borrado:</b> {{o.producto.name}}</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12"><b>Fecha:</b> {{o.fecha | date : 'd-M-yyyy - h:mm:ss a'}} | por: {{o.usuario}}</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">{{o.observacion}}</div>
+        </div>
+        <hr>     
+      </div>
     </div>
   </div>
   <div class="modal-footer">
@@ -120,7 +120,7 @@
         </div>
         <div class="col-lg-7">
           <span><b>Observaci&oacute;n:</b></span>
-          <textarea class="form-control" ng-model="observacion_pedido" placeholder="Sin Observaciones"></textarea>          
+          <textarea class="form-control" ng-model="observacion_pedido" placeholder="Sin Observaciones"></textarea>     
         </div>
       </div>
       <hr>
@@ -165,6 +165,7 @@
             <option value="15">15%</option>
             <option value="20">20%</option>
           </select>
+          <textarea ng-model="observacion_descuento" ng-show="descuento != 0" class="form-control" placeholder="Observacion aqui..."></textarea>    
         </div>
       </div>
       <hr>

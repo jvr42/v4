@@ -46,6 +46,7 @@ var OrdenesSchema = new Schema({
   tipoPago: String,
   fechaEditado: Number,
   observacion_pedido: String,
+  observacion_descuento: String,
   observacion: String,
   propinaPagada: Number,
   observaciones: {

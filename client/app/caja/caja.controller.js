@@ -10,7 +10,8 @@ angular.module('posApp')
 
     $scope.user = '';
     $scope.orden_id = '';
-    $scope.totalOrdenes = 0;
+
+    
 
     $http.get('/api/users').success(function(data){
       $scope.usuarios = data;
@@ -18,8 +19,16 @@ angular.module('posApp')
 
     $http.get('/api/ordenes/').then(function(response) {
       $scope.ordenes = response.data;
-      socket.syncUpdates('ordenes', $scope.ordenes);
       $scope.totalOrdenes = $scope.ordenes.length;
+      socket.syncUpdates('ordenes', $scope.ordenes, function(event, item, array){
+        var ordenes = array.filter(function(orden){
+          if (orden.status == "abierta")
+            return  true;
+        });
+
+        $scope.totalOrdenes = ordenes.length;
+      });
+      
     });
 
 /*    $scope.delete = Modal.confirm.delete(function(orden) {
@@ -172,6 +181,7 @@ angular.module('posApp')
   $scope.totalPropina = 0;
   $scope.descuento = "0";
   $scope.observacion_pedido = "";
+  $scope.observacion_descuento = "";
 
   $scope.calculateTotal = function(){
         var total = 0;
@@ -231,7 +241,8 @@ angular.module('posApp')
     $scope.orden.fechaCierre = new Date().getTime();
     $scope.orden.numeroBoleta = $scope.numeroBoleta;
     $scope.orden.tipoPago = $scope.tipoPago;
-    $scope.orden.observacion_pedido = $scope.observacion_pedido;
+    $scope.orden.observacion_pedido = $scope.observacion_pedido;   
+    $scope.orden.observacion_descuento = $scope.observacion_descuento;  
 
     for(var i=0; i<$scope.orden.productos.length;i++)
     {

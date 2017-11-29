@@ -100,6 +100,7 @@
                         <button ng-click="ver(orden)" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
                         <button ng-if="orden.observaciones.length != 0" class="btn btn-warning"><span class="glyphicon glyphicon-info-sign"></span></button>
                         <button ng-if="orden.observacion" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
+                        <button ng-if="orden.observacion_descuento" class="btn btn-warning"><span class="glyphicon glyphicon-info-sign"></span></button>
                         <!-- <button ng-click="delete(orden)" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span></button> -->
                       </td>
                     </tr>
@@ -144,6 +145,8 @@
   <div class="modal-body">
     <div ng-if="orden.status == 'Borrado'"><b>Estado:</b> {{orden.status}}</div>
     <div ng-if="orden.status == 'Borrado'"><b>Observacion al Borrar:</b> {{orden.observacion}}
+    </div>
+    <div ng-if="orden.observacion_descuento != ''"><b>Descuento de (${{orden.descuento | number: 0}}) aplicado :</b> {{orden.observacion_descuento}}
     </div>
     <div><b>Orden ingresada por:</b> {{orden.usuario.name}}</div>
     <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>

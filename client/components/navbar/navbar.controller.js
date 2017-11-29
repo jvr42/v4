@@ -59,13 +59,15 @@ angular.module('posApp')
 
     $http.get('api/messages/user/' + $scope.getCurrentUser().name).then(function(response){
        $scope.mensajes = response.data
-       $scope.mensajes = $scope.mensajes.filter(function(mensaje){
-          if (mensaje.read == false)
-            return true;
-       });       
 
-       socket.syncUpdates('messages', $scope.mensajes);
+       socket.syncUpdates('messages', $scope.mensajes, function(event, item, array){
+          var mensajes = array.filter(function(mensaje){
+            if (mensaje.usuario.name == Auth.getCurrentUser().name)
+              return true;
+          });
 
+          $scope.mensajes = mensajes;
+       });
     })
 
     $scope.status = {
