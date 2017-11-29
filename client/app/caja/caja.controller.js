@@ -11,8 +11,6 @@ angular.module('posApp')
     $scope.user = '';
     $scope.orden_id = '';
 
-    
-
     $http.get('/api/users').success(function(data){
       $scope.usuarios = data;
     });
