@@ -3,9 +3,9 @@
     <div class="navbar-header">
       <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
         <span class="sr-only">Toggle navigation</span>
-        <span ng-if="mensajes.length == 0" class="icon-bar"></span>
-        <span ng-if="mensajes.length == 0" class="icon-bar"></span>
-        <span ng-if="mensajes.length == 0" class="icon-bar"></span>
+        <span ng-if="mensajes.length == 0 || isAdmin()" class="icon-bar"></span>
+        <span ng-if="mensajes.length == 0 || isAdmin()" class="icon-bar"></span>
+        <span ng-if="mensajes.length == 0 || isAdmin()" class="icon-bar"></span>
         <span  style="font-size: 14px;" class="badge bg-success" ng-if="mensajes.length != 0 && !isAdmin()">{{mensajes.length}}</span>
       </button>
       <a class="navbar-brand" style="font-size: 14px;color: black;"><b>Kanguru Beach Bar</b></a>
@@ -25,7 +25,7 @@
               <div style="padding: 5px 5px 5px 15px; width: 400px;">
                 <div class="row">
                   <div class="col-xs-9"><b>{{mensaje.producto.name}}</b><br>Orden #: <b>{{mensaje.orden_id}}</b>, Mesa: <b>{{mensaje.mesa}}</b>, a las: <b>{{mensaje.createdOn | date: 'h:mm a'}}</b></div>
-                  <div class="col-xs-3"><button ng-click="deleteMensaje(mensaje)" class="btn-xs btn-success glyphicon glyphicon-ok"></button>
+                  <div class="col-xs-3"><button ng-click="deleteMensaje(mensaje)" class="btn btn-success glyphicon glyphicon-ok"></button>
                   </div>
                 </div>                 
               </div>
