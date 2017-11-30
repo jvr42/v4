@@ -69,7 +69,8 @@
               <tbody>
                 <tr ng-repeat="g in general">
                   <td>{{g._id}}</td>
-                  <td>{{g.value | currency }}</td>
+                  <td ng-show="g._id != 'descuento'">{{g.value | currency }}</td>
+                  <td ng-show="g._id == 'descuento'" style="color: red; font-weight: bold">{{-g.value | currency }}</td>
                 </tr>
                 <tr>
                   <td align="right">
@@ -100,7 +101,7 @@
                         <button ng-click="ver(orden)" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
                         <button ng-if="orden.observaciones.length != 0" class="btn btn-warning"><span class="glyphicon glyphicon-info-sign"></span></button>
                         <button ng-if="orden.observacion" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
-                        <button ng-if="orden.observacion_descuento" class="btn btn-warning"><span class="glyphicon glyphicon-info-sign"></span></button>
+                        <button ng-if="orden.descuento" class="btn btn-warning"><span class="glyphicon glyphicon-info-sign"></span></button>
                         <!-- <button ng-click="delete(orden)" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span></button> -->
                       </td>
                     </tr>
@@ -146,7 +147,7 @@
     <div ng-if="orden.status == 'Borrado'"><b>Estado:</b> {{orden.status}}</div>
     <div ng-if="orden.status == 'Borrado'"><b>Observacion al Borrar:</b> {{orden.observacion}}
     </div>
-    <div ng-if="orden.observacion_descuento != ''"><b>Descuento de (${{orden.descuento | number: 0}}) aplicado :</b> {{orden.observacion_descuento}}
+    <div ng-if="orden.observacion_descuento"><b>Descuento de (${{orden.descuento | number: 0}}) aplicado :</b> {{orden.observacion_descuento}}
     </div>
     <div><b>Orden ingresada por:</b> {{orden.usuario.name}}</div>
     <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
@@ -172,25 +173,26 @@
       </table>
     </div>
     <hr>
-    <div class="precioModal text-center"><b>Total:</b> {{calculateTotal() | currency}}
-      <hr><b>Por pagar:</b> {{calculatePendiente() | currency}}</div>
+    <div class="precioModal text-center"><b>Total:</b> {{calculateTotal() | currency}}</div>
+    <div class="precioModal text-center" ng-if="orden.descuento"><b>Descuento:</b> {{orden.descuento}}</div>
+    <!-- <hr><b>Por pagar:</b> {{calculatePendiente() | currency}}</div> -->
     <div ng-if="orden.observaciones.length != 0">
       <hr>
-      <div><b>Historial de Modificaciones:</b></div>
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <th>Fecha</th>
-            <th>Observacion</th>
-            <th>Producto</th>
-          </thead>
-          <tr ng-repeat="o in orden.observaciones">
-            <td class="text-left">{{o.fecha | date : 'd-M-yyyy - h:mm:ss a'}}</td>
-            <td class="text-left">{{o.observacion}}</td>
-            <td class="text-left">{{o.producto.name}}</td>
-          </tr>
-        </table>
+    <div><h4><u>Historial de Modificaciones:</u></h4></div>
+    <div class="table-responsive">
+      <div ng-repeat="o in orden.observaciones">
+        <div class="row">
+            <div class="col-lg-12"><b>Producto borrado:</b> {{o.producto.name}}</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12"><b>Fecha:</b> {{o.fecha | date : 'd-M-yyyy - h:mm:ss a'}} | por: {{o.usuario}}</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">{{o.observacion}}</div>
+        </div>
+        <hr>     
       </div>
+    </div>
     </div>
   </div>
   <div class="modal-footer">

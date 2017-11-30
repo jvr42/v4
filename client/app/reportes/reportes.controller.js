@@ -94,7 +94,10 @@ angular.module('posApp')
             var sum = 0;
 
             $scope.general.forEach(function(tipo){
-              sum += tipo.value; 
+              if (tipo._id == 'descuento')
+                sum -= tipo.value;
+              else
+                sum += tipo.value; 
             });
 
             $scope.totalVentas = sum;

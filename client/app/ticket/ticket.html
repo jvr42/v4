@@ -1,5 +1,4 @@
-<div class="paper">
-<!-- 	  <h3 class="text-center"><b>Kanguru Beach Bar</b></h3> -->
+<div class="paper" class="ng-cloak">
   <img class="logo center-block" src="../assets/images/logo.png">
   <br>
   <div><b># de Orden:</b> {{orden.orden_id}}</div>
@@ -14,14 +13,14 @@
         <th>Precio</th>
       </thead>
       <tr ng-repeat="producto in orden.productos">
-        <td>{{producto.cantidad}}</td>
+        <td>{{producto.cantidad - producto.pagados}}</td>
         <td>{{producto.name}}</td>
-        <td>{{producto.precio * producto.cantidad | currency: $: 0}}</td>
+        <td>{{producto.precio * (producto.cantidad - producto.pagados) | currency: $: 0}}</td>
       </tr>
     </table>
   <hr>
-  <div class="text-center"><b>Por pagar:</b> {{calculatePendiente() | currency: $: 0}}</div>
-  <div class="text-center"><b>Propina:</b> {{ totalPropina | currency: $: 0 }}</div>
-  <h3><div class="text-center"><b>TOTAL:</b> {{ totalWithPropina | currency: $: 0 }}</div></h3>
+  <div class="text-center"><b>Por pagar:</b> {{ orden.pendiente | currency: $: 0}}</div>
+  <div class="text-center"><b>Propina:</b> {{ orden.propina | currency: $: 0 }}</div>
+  <h3><div class="text-center"><b>TOTAL:</b> {{ orden.pendiente + orden.propina | currency: $: 0 }}</div></h3>
   <hr>
 </div>

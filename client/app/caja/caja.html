@@ -148,10 +148,10 @@
           <div class="col-lg-6 col-xs-6 text-left"><b>Por pagar:</b> {{calculatePendiente() | currency}}</div>
           <div class="col-lg-6 col-xs-6"><b>Total:</b> {{calculatePendiente() | currency}}</div>
         </div>
-        <!-- <div ng-if="propina == true"><b>Propina:</b> {{ totalPropina | currency }}</div> -->
-        <div ng-if="propina == true"><b>Total mas Propina:</b> {{ totalWithPropina | currency }}</div>
+        <div ng-if="propina == true"><b>Propina sugerida (10%):</b> {{ totalPropina | currency }}</div>
         <div ng-if="descuento != 0"><b>Descuento ({{descuento}}%):</b> {{ totalDescuento | currency }}</div>
-        <div ng-if="descuento != 0"><b>TOTAL:</b> {{ totalMenosDescuento | currency }}</div>
+        <div ng-if="descuento != 0"><b>TOTAL:</b> {{ totalMenosDescuento | currency }}</div>        
+        <div ng-if="propina == true"><b>Total mas Propina:</b> {{ totalWithPropina | currency }}</div>
         <hr>
       </div>
     </div>
@@ -278,10 +278,25 @@
       </table>
     </div>
     <hr>
-    <div class="precioModal text-center"><b>Total Subcuenta:</b> {{calculateTotal() | currency}}</div>
-    <div class="precioModal text-center"><b>Propina:</b> {{propina = calculateTotal() * 0.10 | currency}}</div>
-    <div class="precioModal text-center"><b>Total mas Propina:</b> {{ calculateTotal() + propina | currency }}</div>
+    <div class="precioModal text-right"><b>Total Subcuenta:</b> {{calculateTotal() | currency}}</div>
+    <div class="precioModal text-right"><b>Propina sugerida (10%):</b> {{propina = calculateTotal() * 0.10 | currency}}</div>
+    <div class="precioModal text-right" ng-if="descuento != 0"><b>Descuento ({{descuento}}%):</b> {{calculateTotal() * (descuento/100) | currency }}</div>
+    <div class="precioModal text-right" ng-if="descuento != 0"><b>TOTAL:</b> {{calculateTotal() - calculateTotal() * (descuento/100) | currency}}</div> 
+    <div class="precioModal text-right"><b>Total mas Propina:</b> {{ calculateTotal() - calculateTotal() * (descuento/100) + propina | currency }}</div>
     <hr>
+      <div class="row">
+        <div class="col-lg-12 col-xs-12 text-center">
+          <select class="form-control" ng-model="descuento" ng-change="aplicarDescuento(descuento)">
+            <option value="0">-- SIN DESCUENTO --</option>
+            <option value="5">5%</option>
+            <option value="10">10%</option>
+            <option value="15">15%</option>
+            <option value="20">20%</option>
+          </select>
+          <textarea ng-model="observacion_descuento" ng-show="descuento != 0" class="form-control" placeholder="Observacion aqui..."></textarea>    
+        </div>
+      </div>
+      <hr>
     <div class="row">
       <div class="col-lg-12 col-xs-12 text-center">
         <input type="text" ng-model="data.ingreso" class="form-control" placeholder="Vuelto" />

@@ -100,7 +100,10 @@ exports.ammountSales = function(req, res) {
 exports.ventas = function(req, res) {
 
     var mapFunction = function(){
-        for(var i = 0; i < this.productos.length; i++){
+
+        emit('descuento', Array.sum(this.descuento))
+
+        for(var i = 0; i < this.productos.length; i++){            
             var key = this.productos[i].tipo;
             var value = Number(this.productos[i].cantidad) * Number(this.productos[i].precio);
             emit(key, value);

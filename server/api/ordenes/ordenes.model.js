@@ -42,11 +42,17 @@ var OrdenesSchema = new Schema({
 	propina: Boolean,
 	numeroBoleta: Number,
 	fechaCierre: Number,
-	descuento: Number,
+	descuento: {
+    type:[],
+    default: []
+  },
   tipoPago: String,
   fechaEditado: Number,
   observacion_pedido: String,
-  observacion_descuento: String,
+  observacion_descuento: {
+    type:[],
+    default: []
+  },
   observacion: String,
   propinaPagada: Number,
   observaciones: {
