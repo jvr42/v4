@@ -171,8 +171,6 @@ angular.module('posApp')
     $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
     };
-
-    console.log($scope.orden)
   });
 
 angular.module('posApp')
@@ -256,8 +254,6 @@ angular.module('posApp')
       Orden.update({ id: $scope.orden._id }, $scope.orden);
 
       $modalInstance.dismiss('cerrar');
-
-      console.log($scope.orden);
     }
 
     $scope.cerrar = function() {
