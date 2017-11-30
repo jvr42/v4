@@ -69,14 +69,14 @@
               <tbody>
                 <tr ng-repeat="g in general">
                   <td>{{g._id}}</td>
-                  <td ng-show="g._id != 'descuento'">{{g.value | currency }}</td>
+                  <td ng-show="g._id != 'descuento'">{{g.value | currency : "$" : 0 }}</td>
                   <td ng-show="g._id == 'descuento'" style="color: red; font-weight: bold">{{-g.value | currency }}</td>
                 </tr>
                 <tr>
                   <td align="right">
                     <h4>TOTAL:</h4></td>
                   <td>
-                    <h4>{{ totalVentas | currency }}</h4></td>
+                    <h4>{{ totalVentas | currency : "$" : 0 }}</h4></td>
                 </tr>
               </tbody>
             </table>
@@ -99,9 +99,9 @@
                       <td>{{orden.total | currency : "$" : 0 }}</td>
                       <td>
                         <button ng-click="ver(orden)" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
-                        <button ng-if="orden.observaciones.length != 0" class="btn btn-warning"><span class="glyphicon glyphicon-info-sign"></span></button>
+                        <button ng-if="orden.observaciones.length != 0" class="btn btn-danger"><span class="glyphicon glyphicon-info-sign"></span></button>
                         <button ng-if="orden.observacion" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
-                        <button ng-if="orden.descuento" class="btn btn-warning"><span class="glyphicon glyphicon-info-sign"></span></button>
+                        <button ng-if="orden.descuento[0] != null" class="btn btn-warning"><span class="glyphicon glyphicon-info-sign"></span></button>
                         <!-- <button ng-click="delete(orden)" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span></button> -->
                       </td>
                     </tr>
@@ -147,12 +147,15 @@
     <div ng-if="orden.status == 'Borrado'"><b>Estado:</b> {{orden.status}}</div>
     <div ng-if="orden.status == 'Borrado'"><b>Observacion al Borrar:</b> {{orden.observacion}}
     </div>
-    <div ng-if="orden.observacion_descuento"><b>Descuento de (${{orden.descuento | number: 0}}) aplicado :</b> {{orden.observacion_descuento}}
-    </div>
     <div><b>Orden ingresada por:</b> {{orden.usuario.name}}</div>
     <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
     <div><b>Tipo de orden:</b> {{orden.tipo}}</div>
     <div><b>Mesa:</b> {{orden.mesa}}</div>
+    <div ng-if="descuento != 0"><b>Descuento de (${{descuento | number: 0}}) aplicado :</b>
+    <ol>
+      <li ng-if="descuento != 0" ng-repeat="obs in orden.observacion_descuento track by $index">(${{orden.descuento[$index] | number:0 }}): {{ obs }}</li>
+    </ol>
+    </div>
     <hr>
     <div class="table-responsive">
       <table class="table">
@@ -174,7 +177,9 @@
     </div>
     <hr>
     <div class="precioModal text-center"><b>Total:</b> {{calculateTotal() | currency}}</div>
-    <div class="precioModal text-center" ng-if="orden.descuento"><b>Descuento:</b> {{orden.descuento}}</div>
+    <div class="precioModal text-center" ng-if="descuento != 0"><b>Descuento:</b> {{descuento | currency}}</div>
+    <div class="precioModal text-center" ng-if="descuento != 0"><b>TOTAL:</b> {{calculateTotal() - descuento | currency}}</div>
+
     <!-- <hr><b>Por pagar:</b> {{calculatePendiente() | currency}}</div> -->
     <div ng-if="orden.observaciones.length != 0">
       <hr>

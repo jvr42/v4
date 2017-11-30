@@ -101,7 +101,8 @@ exports.ventas = function(req, res) {
 
     var mapFunction = function(){
 
-        emit('descuento', Array.sum(this.descuento))
+        if (this.descuento instanceof Array)
+            emit('descuento', Array.sum(this.descuento))
 
         for(var i = 0; i < this.productos.length; i++){            
             var key = this.productos[i].tipo;

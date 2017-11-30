@@ -125,12 +125,11 @@ angular.module('posApp')
 
     $scope.orden = orden;
 
-/*    if ($scope.orden.descuento){
-      console.log($scope.orden.descuento)
-      $scope.orden.descuento = $scope.orden.descuento.reduce(function(i,value){
+    if ($scope.orden.descuento){
+      $scope.descuento = $scope.orden.descuento.reduce(function(i,value){
         return i + value
       },0)      
-    }*/
+    }
 
     $scope.calculateTotal = function() {
       var total = 0;
@@ -172,6 +171,8 @@ angular.module('posApp')
     $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
     };
+
+    console.log($scope.orden)
   });
 
 angular.module('posApp')
