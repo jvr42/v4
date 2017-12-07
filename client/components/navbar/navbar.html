@@ -15,7 +15,7 @@
         <li ng-repeat="item in menu" ui-sref-active="active">
           <a ng-show="isLoggedIn()" ng-if="check(item.auth, getRole())" ui-sref="{{item.state}}">{{item.title}}</a>
         </li>
-        <li dropdown auto-close="disabled" on-toggle="toggled(open)" ng-if="!isAdmin()">
+        <li dropdown auto-close="disabled" on-toggle="toggled(open)" ng-if="!isAdmin() && getCurrentUser().role != 'supervisor'">
           <a class="nav-bar" id="simple-dropdown" dropdown-toggle>
             Mensajes <span style="font-size: 14px;" class="badge bg-success" ng-if="mensajes.length != 0">{{mensajes.length}}</span>
           </a>

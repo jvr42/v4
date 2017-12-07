@@ -22,8 +22,12 @@ angular.module('posApp')
             if(user.role == 'bar'){
               $state.go('bar');
             }
-            else{
-              $state.go('main');
+            else {
+              if (user.role == 'supervisor'){
+                $state.go('caja');
+              }
+              else
+                $state.go('main');
             }
           }
         })

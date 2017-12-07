@@ -28,11 +28,11 @@
                   </div>
                   <div class="panel-body">
                     <div class="container-fluid">
-                      <button aria-hidden="true" ng-click="edit(orden._id)" style="font-size: 30px;" class="btn-lg btn-success glyphicon glyphicon-pencil"></button>
+                      <button aria-hidden="true" ng-if="currentUserRole != 'supervisor'" ng-click="edit(orden._id)" style="font-size: 30px;" class="btn-lg btn-success glyphicon glyphicon-pencil"></button>
                       <button aria-hidden="true" ng-click="ver(orden)" style="font-size: 30px;" class="btn-lg btn-primary glyphicon glyphicon-search"></button>
-                      <button aria-hidden="true" ng-click="delete(orden)" ng-if="orden.status != 'Borrado'" style="font-size: 30px;" class="btn-lg btn-danger glyphicon glyphicon-remove"></button>
-                      <button aria-hidden="true" ng-click="pay(orden)" ng-if="orden.status != 'Borrado'" style="font-size: 30px;" class="btn-lg btn-success glyphicon glyphicon-usd"></button>
-                      <button aria-hidden="true" ng-click="divide(orden)" ng-if="orden.status != 'Borrado'" style="font-size: 30px;" class="btn-lg btn-success glyphicon glyphicon-th-list"></button>
+                      <button aria-hidden="true" ng-if="currentUserRole != 'supervisor'"  ng-click="delete(orden)" ng-if="orden.status != 'Borrado'" style="font-size: 30px;" class="btn-lg btn-danger glyphicon glyphicon-remove"></button>
+                      <button aria-hidden="true" ng-if="currentUserRole != 'supervisor'"  ng-click="pay(orden)" ng-if="orden.status != 'Borrado'" style="font-size: 30px;" class="btn-lg btn-success glyphicon glyphicon-usd"></button>
+                      <button aria-hidden="true" ng-if="currentUserRole != 'supervisor'"  ng-click="divide(orden)" ng-if="orden.status != 'Borrado'" style="font-size: 30px;" class="btn-lg btn-success glyphicon glyphicon-th-list"></button>
                     </div>
                   </div>
                 </div>

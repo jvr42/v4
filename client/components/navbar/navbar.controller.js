@@ -7,7 +7,7 @@ angular.module('posApp')
     {
       'title': 'Caja',
       'state': 'caja',
-      'auth' : [{role: 'administrador'},{role: 'caja'}]
+      'auth' : [{role: 'administrador'},{role: 'caja'},{role: 'supervisor'}]
     },
     {
       'title': 'Ventas',

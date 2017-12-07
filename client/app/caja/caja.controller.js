@@ -8,6 +8,8 @@ angular.module('posApp')
       }
     });
 
+    $scope.currentUserRole = Auth.getCurrentUser().role;
+
     $scope.user = '';
     $scope.orden_id = '';
 
