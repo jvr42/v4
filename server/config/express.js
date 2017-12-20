@@ -74,7 +74,7 @@ module.exports = function(app) {
   }
 
   if ('development' === env) {
-    app.use(require('connect-livereload')());
+    /*app.use(require('connect-livereload')());*/
   }
 
   if ('development' === env || 'test' === env) {
