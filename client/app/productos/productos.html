@@ -19,6 +19,10 @@
 			            <option value="cocina">Cocina</option>
 			            <option value="bar">Bar</option>
 			          </select>
+                <label style="margin-top:10px">Categoria:</label>
+                <select name="category" class="form-control" ng-model="category">
+                  <option ng-repeat="category in categories" ng-value="category.name">{{category.name}}</option>
+                </select>
 			        </div>
 			      </div>
 			      <div class="row">
@@ -36,7 +40,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading text-center">
 					<input class="form-control" type="text" ng-model="search" style="height:55px;font-size:26px;">
-				</div>	
+				</div>
 				<div class="panel-body">
 					<table class="table text-center" style="font-size:15px;">
 					  <thead style="font-weight:bold;">
@@ -55,7 +59,7 @@
 					    </tr>
 					  </tbody>
 					</table>
-				</div>		
+				</div>
 			</div>
 		</div>
 	</div>

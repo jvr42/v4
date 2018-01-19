@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('posApp')
-  .controller('ProductosCtrl', function ($scope, Producto, socket, Auth, $state) {
+  .controller('ProductosCtrl', function ($scope, Producto, socket, Auth, $state, $http) {
     Auth.isLoggedIn(function(response){
       if (!response){
         $state.go('login');
@@ -10,9 +10,16 @@ angular.module('posApp')
 
   	$scope.tipo = 'cocina';
 
+    $scope.categories = [];
+
+    $http.get('/api/categories').then(function(response){
+      $scope.categories = response.data;
+    })
+
+    $scope.category = '';
     $scope.productos = Producto.query();
     socket.syncUpdates('producto', $scope.productos);
-    
+
     $scope.delete = function(producto) {
 		Producto.remove({ id: producto._id });
 		$scope.productos.splice(this.$index, 1);
@@ -25,12 +32,14 @@ angular.module('posApp')
                 precio: $scope.precio,
                 cantidad: 1,
                 tipo: $scope.tipo,
+                category: $scope.category
             };
 
             Producto.save(producto, function(){
                 $scope.name = '';
                 $scope.precio = '';
-                $scope.tipo = 'cocina';            
+                $scope.tipo = 'cocina';
+                $scope.category = '';
             });
         }
         else
@@ -45,7 +54,8 @@ angular.module('posApp')
     	$scope.id = producto._id;
     	$scope.name = producto.name;
     	$scope.precio = producto.precio;
-		$scope.tipo = producto.tipo;
+		  $scope.tipo = producto.tipo;
+      $scope.category = producto.category;
     }
 
     $scope.update = function()
@@ -55,13 +65,15 @@ angular.module('posApp')
 		  $scope.producto.name = $scope.name;
 		  $scope.producto.precio = $scope.precio;
 		  $scope.producto.tipo = $scope.tipo;
+      $scope.producto.category = $scope.category;
 
 		  $scope.producto.$update(function() {
-		        $scope.id = '';
-		    	$scope.name = '';
-		    	$scope.precio = '';
-				$scope.tipo = 'cocina';
-				$scope.editing = false;
+        $scope.id = '';
+        $scope.name = '';
+        $scope.precio = '';
+        $scope.tipo = 'cocina';
+        $scope.category = '';
+        $scope.editing = false;
 		  });
 
 		});
@@ -72,6 +84,7 @@ angular.module('posApp')
         $scope.name = '';
         $scope.precio = '';
         $scope.tipo = 'cocina';
+        $scope.category = '';
         $scope.editing = false;
     }
 

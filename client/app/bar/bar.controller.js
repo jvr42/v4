@@ -8,6 +8,15 @@ angular.module('posApp')
       }
     });
 
+    $scope.categories = [];
+
+
+    $http.get('/api/categories').then(function(response){
+      $scope.categories = response.data;
+      $scope.busqueda = {category:{name:$scope.categories[0].name}};
+    })
+
+
     $http.get('/api/ordenes/').then(function(response) {
       $scope.ordenes = response.data;
       socket.syncUpdates('ordenes', $scope.ordenes);
@@ -19,13 +28,29 @@ angular.module('posApp')
     }
 
     $scope.revisa = function(orden){
-      if (_.find(orden.productos,{tipo: 'bar'})){
-        if (_.find(orden.productos,{servido: false,tipo: 'bar'})){
+
+      var productosBar = orden.productos.filter(function(producto){
+        if (producto.tipo == 'bar'){
           return true;
-        } else {          
-          return  false;
         }
+      });
+
+      var productosPendientes = productosBar.filter(function(producto){
+        if(producto.servido == false){
+          return true;
+        }
+      });
+
+      var productosPorCategoria = productosPendientes.filter(function(producto){
+        if (producto.category == $scope.busqueda.category.name)
+        {
+          return true;
+        }
+      })
+
+      if (productosPorCategoria.length > 0){
+        return true;
       }
-      return false;
+
     }
   });

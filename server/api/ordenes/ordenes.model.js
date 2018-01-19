@@ -4,7 +4,7 @@ var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 var Schema = mongoose.Schema;
 
 var Producto = new Schema({
-  _id: Number,  
+  _id: Number,
   name: String,
   precio: Number,
   cantidad:  {
@@ -24,7 +24,11 @@ var Producto = new Schema({
     type: Number,
     default: 0
   },
-  observacion: String 
+  category: {
+    type: String,
+    default: ''
+  },
+  observacion: String
 });
 
 var OrdenesSchema = new Schema({

@@ -22,7 +22,11 @@ var ProductoSchema = new Schema({
   pagados : {
     type: Number,
     default: 0
-  } 
+  },
+  category: {
+    type: String,
+    default: ''
+  }
 });
 
 module.exports = mongoose.model('Producto', ProductoSchema);

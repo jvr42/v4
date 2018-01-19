@@ -18,6 +18,7 @@ function onConnect(socket) {
   });*/
 
   // Insert sockets below
+  require('../api/categories/categories.socket').register(socket);
   require('../api/messages/messages.socket').register(socket);
   require('../api/counter/counter.socket').register(socket);
   require('../api/ordenes/ordenes.socket').register(socket);
@@ -60,7 +61,7 @@ module.exports = function(socketio) {
 
     // Call onConnect.
     onConnect(socket);
-    
+
     console.log(socket.address);
     /*socket.log('CONNECTED');*/
   });
