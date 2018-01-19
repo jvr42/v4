@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('posApp')
-  .controller('BarCtrl', function ($scope, $http, socket, Orden, Auth, $state) {
+  .controller('BarCtrl', function ($scope, $http, socket, Orden, Auth, $state, $interval) {
     Auth.isLoggedIn(function(response){
       if (!response){
         $state.go('login');
@@ -10,12 +10,10 @@ angular.module('posApp')
 
     $scope.categories = [];
 
-
     $http.get('/api/categories').then(function(response){
       $scope.categories = response.data;
       $scope.busqueda = {category:{name:$scope.categories[0].name}};
     })
-
 
     $http.get('/api/ordenes/').then(function(response) {
       $scope.ordenes = response.data;
@@ -51,6 +49,21 @@ angular.module('posApp')
       if (productosPorCategoria.length > 0){
         return true;
       }
-
     }
+
+    $scope.mostrarObservacion = function(index, producto) {
+        if (producto.showObservacion)
+            producto.showObservacion = false;
+        else
+            producto.showObservacion = true;
+    }
+
+    $scope.calculateTime = function(createdTime){
+       return moment(new Date(createdTime)).fromNow()
+    }
+
+    $interval(function(){
+        socket.syncUpdates('ordenes', $scope.ordenes);
+    }, 60000)
+
   });

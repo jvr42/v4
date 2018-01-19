@@ -7,6 +7,7 @@
           <select ng-model="busqueda.category.name" class="form-control">
             <option ng-repeat="category in categories" ng-value="category.name">{{category.name}}</option>
           </select>
+          <br>
             <div ng-repeat="orden in ordenes" ng-if="revisa(orden)" class="orden col-lg-12 col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
