@@ -6,12 +6,45 @@
     <div class="row">
       <div class="col-lg-4">
         <div class="panel panel-default">
+          <div class="panel-heading">ESTADISTICAS:</div>
+          <div class="panel-body" style="font-size: 16px;">
+            <b>Ordenes abiertas:</b> {{setestadistica.length}}<br>
+            <b>Cajas funcionando:</b> {{cajas.length + 1}}
+            <div style="padding-left:30px;">
+              <div>
+                <b>Caja Principal:</b>
+                <div style="padding-left:20px;font-size:14px">
+                Pedidos: {{ordenesCajaPrincipal.length}}<br>
+                Total pedidos abiertos: {{totalOrdenesCajaPrincipal | currency }}
+                </div>
+              </div>
+              <div ng-repeat="caja in cajas">
+                <b>{{caja.nombre}}:</b>
+                <div style="padding-left:20px;font-size:14px">
+                Pedidos: {{ ordenesCajaAuxiliar(caja).length }}<br>
+                Total pedidos abiertos: {{ ordenesCajaAuxiliar(caja).ordenes | currency }}
+                </div>
+              </div>
+              <hr>
+              <div>
+                Total en Venta todas las cajas:<br>
+                <span style="font-size: 16px; font-weight: bold">{{totalGeneral | currency }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
           <div class="panel-body">
             <label>Buscar por # de Orden:</label>
             <input class="form-control" type="text" name="orden_id" ng-model="orden_id">
             <br>
             <button class="btn btn-warning center-block" ng-click="getOrden(orden_id)">Buscar Orden</button>
             <hr>
+            <label>Caja: </label>
+            <select ng-model="data.caja" ng-change="getPedidos(desde.today,hasta.today)" class="form-control">
+              <option selected value="Caja Principal">Caja Principal</option>
+              <option ng-repeat="caja in selecciones" ng-value="caja.nombre">{{caja.nombre}}</option>
+            </select>            
             <label>Desde: </label>
             <p class="input-group">
               <input type="text" datepicker-popup="dd-MM-yyyy h:mm a" ng-model="desde.today" is-open="desde.status.opened" close-text="Cerrar" class="form-control" /><span class="input-group-btn">
@@ -56,91 +89,79 @@
       </div>
       <div class="col-lg-8">
         <div ng-if="loading" class="text-center" style="padding-top:120px;"><img src="assets/images/loading_spinner.gif" width="50"></div>
-        <tabset justified="true">
-          <tab heading="VENTAS" active="isActiveVentas">
-            <hr>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Tipo de Producto</th>
-                  <th>Monto Vendido ($)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="g in general">
-                  <td>{{g._id}}</td>
-                  <td ng-show="g._id != 'descuento'">{{g.value | currency : "$" : 0 }}</td>
-                  <td ng-show="g._id == 'descuento'" style="color: red; font-weight: bold">{{-g.value | currency }}</td>
-                </tr>
-                <tr>
-                  <td align="right">
-                    <h4>TOTAL:</h4></td>
-                  <td>
-                    <h4>{{ totalVentas | currency : "$" : 0 }}</h4></td>
-                </tr>
-              </tbody>
-            </table>
-          </tab>
-          <tab heading="Tickets" active="isActiveTickets">
-            <hr>
-            <div style="overflow-y:scroll;height:300px;">
-              <div class="well">
-                <table class="table .table-striped">
+          <tabset justified="true">
+            <tab heading="VENTAS" active="isActiveVentas">
+              <hr>
+                <h3>{{data.caja}}</h3>
+                <div style="font-size:20px;">
+                  Total Bar: {{totalBar | currency}}<br>
+                  Total Cocina: {{totalCocina | currency}}<br>
+                  Total Descuentos: <span style="color:red;font-weight:bold">{{descuentos | currency}}</span><br><br>
+
+                  Total Ventas: {{totalVentasGeneral - descuentos| currency}}
+                </div>
+                
+            </tab>
+            <tab heading="Tickets" active="isActiveTickets">
+              <hr>
+              <div style="overflow-y:scroll;height:300px;">
+                <div class="well">
+                  <table class="table .table-striped">
+                    <thead>
+                      <td><b>Orden ID</b></td>
+                      <td><b>Detalles</b></td>
+                      <td><b>Total</b></td>
+                      <td><b>Ver</b></td>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="orden in ordenes track by $index | limitTo:100 ">
+                        <td>{{orden.orden_id}}</td>
+                        <td>{{orden.fecha | date: 'dd-MM-yyyy'}} | {{ orden.status }}</td>
+                        <td>{{orden.total | currency : "$" : 0 }}</td>
+                        <td>
+                          <button ng-click="ver(orden)" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+                          <button ng-if="orden.observaciones.length != 0" class="btn btn-danger"><span class="glyphicon glyphicon-info-sign"></span></button>
+                          <button ng-if="orden.observacion" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
+                          <button ng-if="orden.descuento[0] != null" class="btn btn-warning"><span class="glyphicon glyphicon-info-sign"></span></button>
+                          <!-- <button ng-click="delete(orden)" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span></button> -->
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </tab>
+            <tab heading="Ranking" active="isActiveRanking">
+              <hr>
+              <div class="table-responsive" style="overflow-y:scroll;height:300px;">
+                <table class="table">
                   <thead>
-                    <td><b>Orden ID</b></td>
-                    <td><b>Detalles</b></td>
-                    <td><b>Total</b></td>
-                    <td><b>Ver</b></td>
+                    <th>#</th>
+                    <th>
+                      <input class="form-control" type="text" ng-model="busqueda.text" placeholder="Buscar producto aqui...">
+                    </th>
+                    <th>Cantidad</th>
+                    <!-- <th>Monto</th> -->
                   </thead>
                   <tbody>
-                    <tr ng-repeat="orden in ordenes track by $index | limitTo:100 ">
-                      <td>{{orden.orden_id}}</td>
-                      <td>{{orden.fecha | date: 'dd-MM-yyyy'}}</td>
-                      <td>{{orden.total | currency : "$" : 0 }}</td>
-                      <td>
-                        <button ng-click="ver(orden)" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
-                        <button ng-if="orden.observaciones.length != 0" class="btn btn-danger"><span class="glyphicon glyphicon-info-sign"></span></button>
-                        <button ng-if="orden.observacion" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
-                        <button ng-if="orden.descuento[0] != null" class="btn btn-warning"><span class="glyphicon glyphicon-info-sign"></span></button>
-                        <!-- <button ng-click="delete(orden)" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span></button> -->
-                      </td>
+                    <tr ng-repeat="producto in ranking | orderBy: '-cantidad' | filter:busqueda.text">
+                      <td>{{ $index + 1 }}</td>
+                      <td>{{producto.name}}</td>
+                      <td><b>{{producto.cantidad }}</b></td>
+                      <!-- <td><b>{{producto.value.precio * producto.value.cantidad | currency : "$" : 0}}</b></td> -->
                     </tr>
                   </tbody>
                 </table>
               </div>
-            </div>
-          </tab>
-          <tab heading="Ranking">
-            <hr>
-            <div class="table-responsive" style="overflow-y:scroll;height:300px;">
-              <table class="table">
-                <thead>
-                  <th>#</th>
-                  <th>
-                    <input class="form-control" type="text" ng-model="busqueda.text" placeholder="Buscar producto aqui...">
-                  </th>
-                  <th>Cantidad</th>
-                  <!-- <th>Monto</th> -->
-                </thead>
-                <tbody>
-                  <tr ng-repeat="producto in productosVendidos | orderBy:'-value' | filter:busqueda.text">
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{producto._id}}</td>
-                    <td><b>{{producto.value }}</b></td>
-                    <!-- <td><b>{{producto.value.precio * producto.value.cantidad | currency : "$" : 0}}</b></td> -->
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </tab>
-        </tabset>
+            </tab>
+          </tabset>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<footer></footer>
-<script type="text/ng-template" id="verOrden.html">
-  <div class="modal-header">
+  <footer></footer>
+  <script type="text/ng-template" id="verOrden.html">
+    <div class="modal-header">
     <h3 class="modal-title">Detalles de orden # {{orden.orden_id}}</h3>
   </div>
   <div class="modal-body">
@@ -204,8 +225,8 @@
     <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
   </div>
 </script>
-<script type="text/ng-template" id="deleteOrden.html">
-  <div class="modal-header">
+  <script type="text/ng-template" id="deleteOrden.html">
+    <div class="modal-header">
     <h3 class="modal-title">Borrar Orden: # {{orden.orden_id}}</h3>
   </div>
   <div class="modal-body">

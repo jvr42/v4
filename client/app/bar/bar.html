@@ -1,46 +1,67 @@
 <navbar></navbar>
 <div class="container">
-    <h3 class="text-center">VISOR DE BARRA</h3>
-    <hr>
-    <div class="row">
-        <div class="col-lg-12 text-left">
-          <select ng-model="busqueda.category.name" class="form-control">
-            <option ng-repeat="category in categories" ng-value="category.name">{{category.name}}</option>
-          </select>
-          <br>
-            <div ng-repeat="orden in ordenes" ng-if="revisa(orden)" class="orden col-lg-12 col-xs-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-lg-4 col-xs-4 text-left"><span style="font-size:20px;"><b># {{orden.orden_id}}</b></span></div>
-                                <div class="col-lg-4 col-xs-4 text-center"><span style="font-size:20px;"><b>{{orden.usuario.name}}</b> | para {{orden.tipo}}</span></div>
-                                <div class="col-lg-4 col-xs-4 text-right"><span style="font-size:20px;">{{ orden.fechaEditado | date : 'h:mm:ss a' }}</span></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div ng-repeat="producto in orden.productos" class="productos">
-                            <div ng-if="producto.tipo == 'bar'" class="container-fluid">
-                                <div class="row" ng-hide="producto.servido == true || producto.category != busqueda.category.name">
-                                    <div class="col-lg-2 col-xs-2 text-left"><span style="font-size:20px;" class="badge">{{producto.cantidad}}</span></div>
-                                    <div class="col-lg-5 col-xs-5 text-left">
-                                        <span style="font-size:20px;" ng-if="producto.servido == false"> {{producto.name}}</span>
-                                        <span style="font-size:20px;text-decoration:line-through" ng-if="producto.servido == true"> {{producto.name}}</span>
-                                    </div>
-                                    <div class="col-lg-5 col-xs-5 text-right">
-                                        <button aria-hidden="true" ng-click="listo(orden, producto)" class="btn btn-success glyphicon glyphicon-ok"></button>
-                                    </div>
-                                </div>
-                                <div ng-if="producto.observacion && producto.category == busqueda.category.name" ng-hide="producto.servido == true" class="well" style="margin-top: 10px;font-size: 18px;">
-                                    {{producto.observacion}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <h3 class="text-center">VISOR DE BARRA</h3>
+  <div class="text-center">
+    <span ng-repeat="mesero in meseros">
+        <button id="{{mesero.name}}" class="btn btn-default" ng-click="addMeseroToBarFilter(mesero)">{{mesero.name}}</button>
+    </span>    
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-lg-12 text-left">
+      <select ng-model="busqueda.category.name" class="form-control">
+        <option ng-repeat="category in categories" ng-value="category.name">{{category.name}}</option>
+      </select>
+      <br>
+      <div ng-repeat="orden in data.ordenes" ng-if="revisa(orden)" class="orden col-lg-12 col-xs-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-4 col-xs-4 text-left"><span style="font-size:20px;"><b># {{orden.orden_id}}</b></span></div>
+                <div class="col-lg-4 col-xs-4 text-center"><span style="font-size:20px;"><b>{{orden.usuario.name}}</b> | para {{orden.tipo}}</span></div>
+                <div class="col-lg-4 col-xs-4 text-right"><span style="font-size:20px;">{{ orden.fechaEditado | date : 'h:mm:ss a' }}</span></div>
+              </div>
             </div>
+          </div>
+          <div class="panel-body">
+            <div ng-repeat="producto in orden.productos" class="productos">
+              <div ng-if="producto.tipo == 'bar'" class="container-fluid">
+                <div class="row" ng-hide="producto.servido == true || producto.category != busqueda.category.name">
+                  <div class="col-lg-1 col-xs-2 text-left"><span style="font-size:20px;" class="badge">{{producto.cantidad}}</span></div>
+                  <div class="col-lg-10 col-xs-5 text-left">
+                    <div class="row">
+                      <div class="col-lg-6"><span style="font-size:20px;" ng-if="producto.servido == false">{{producto.name}}</span></div>
+                      <div class="col-lg-6"><span style="font-size:20px;">{{calculateTime(producto._id)}}</span></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-1 col-xs-5 text-right">
+                    <button aria-hidden="true" ng-click="listo(orden, producto)" class="btn btn-success glyphicon glyphicon-ok"></button>
+                  </div>
+                </div>
+                <div ng-if="producto.observacion && producto.category == busqueda.category.name" ng-hide="producto.servido == true" class="well" style="margin-top: 10px;font-size: 18px;">
+                  {{producto.observacion}}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 <footer></footer>
+<script type="text/ng-template" id="configbar.html">
+  <div class="modal-header">
+  <h3 class="modal-title">Configuración Visor de Barra</h3>
+</div>
+<div class="modal-body">
+  Selecciona los meseros con los que quieres trabajar:<br>
+  <input type="text" ng-model="data.texto" class="form-control">
+
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
+</script>

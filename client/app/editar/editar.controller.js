@@ -19,15 +19,29 @@ angular.module('posApp')
     $scope.orden_id = $stateParams.id;
 
     $scope.data = {
+      numPersonas: '',
+      caja: '',
       tipo: 'servir',
       mesa: 't 1',
       u: $scope.u,
       role: $scope.u.role
     };
 
+
+    $http.get('/api/cajas').then(function(response) {
+      $scope.selecciones = response.data;  
+    });
+
     $http.get('/api/ordenes/' + $scope.orden_id).then(function(response) {
       $scope.orden = response.data;
+      $scope.data.caja = $scope.orden.caja;
       $scope.ticket = $scope.orden.productos;
+      if ($scope.orden.caja){        
+        $scope.data.caja = $scope.orden.caja
+      }else{
+        $scope.data.caja = "Caja Principal"
+      }
+      $scope.data.numPersonas = $scope.orden.numPersonas
 
       $scope.data.orden_id = $scope.orden.orden_id;
       $scope.data.tipo = $scope.orden.tipo;
@@ -77,10 +91,17 @@ angular.module('posApp')
         orden.status = 'abierta';
         orden.ultimoEditor = $scope.u;
         orden.tipo = $scope.data.tipo;
-        orden.mesa = $scope.data.mesa;
+        orden.mesa = $scope.data.mesa;        
+        orden.numPersonas = $scope.data.numPersonas;
         orden.productos = $scope.ticket;
         orden.total = $scope.calculateTotal();
         orden.servida = false;
+
+        if ($scope.data.caja != 'Caja Principal'){              
+          orden.caja = $scope.data.caja;
+        } else{
+          orden.caja = ''
+        }
 
         Orden.update({ id: $scope.orden._id }, orden, function() {
           $scope.ticket = [];

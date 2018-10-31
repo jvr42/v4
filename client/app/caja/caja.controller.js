@@ -2,6 +2,7 @@
 
 angular.module('posApp')
   .controller('CajaCtrl', function($scope, $http, socket, Orden, $modal, $state, Modal, Auth) {
+
     Auth.isLoggedIn(function(response) {
       if (!response) {
         $state.go('login');
@@ -9,32 +10,71 @@ angular.module('posApp')
     });
 
     $scope.currentUserRole = Auth.getCurrentUser().role;
-
-    $scope.user = '';
-    $scope.orden_id = '';
+    $scope.u = Auth.getCurrentUser();
 
     $http.get('/api/users').success(function(data) {
       $scope.usuarios = data;
     });
 
-    $http.get('/api/ordenes/').then(function(response) {
-      $scope.ordenes = response.data;
-      $scope.totalOrdenes = $scope.ordenes.length;
-      socket.syncUpdates('ordenes', $scope.ordenes, function(event, item, array) {
-        var ordenes = array.filter(function(orden) {
-          if (orden.status == "abierta")
-            return true;
+    $http.get('/api/cajas').then(function(response) {
+      $scope.cajas = response.data
+      $scope.cajas = $scope.cajas.filter(function(caja){
+        if (caja.cajero_asignado.name == $scope.u.name){
+          return true;
+        }
+      })
+      if ($scope.cajas.length == 0){
+
+        $scope.caja_titulo = "CAJA PRINCIPAL"
+
+        $http.get('/api/ordenes/').then(function(response) {
+          $scope.ordenes = response.data;
+          $scope.ordenes = $scope.ordenes.filter(function(orden){
+            if(!orden.caja)
+              return true;
+          })
+
+          $scope.totalOrdenes = $scope.ordenes.length;
+
+          socket.syncUpdates('ordenes', $scope.ordenes, function(event, item, array) {
+            $scope.ordenes = array.filter(function(orden) {
+              if (orden.status == "abierta" && !orden.caja)
+                return true;
+            });
+
+            $scope.totalOrdenes = $scope.ordenes.length;
+          });
+
         });
+      } else {
 
-        $scope.totalOrdenes = ordenes.length;
-      });
+        $scope.caja_titulo = $scope.cajas[0].nombre
 
-    });
+        $http.get('/api/ordenes/').then(function(response) {
+          $scope.ordenes = response.data;
+          $scope.ordenes = $scope.ordenes.filter(function(orden){
+            if (orden.caja == $scope.cajas[0].nombre){
+              return true
+            }
+          })
 
-    /*    $scope.delete = Modal.confirm.delete(function(orden) {
-          Orden.remove({ id: orden._id });
-          //$scope.ordenes.splice(this.$index, 1);
-        });*/
+          $scope.totalOrdenes = $scope.ordenes.length;
+
+          socket.syncUpdates('ordenes', $scope.ordenes, function(event, item, array) {
+            $scope.ordenes = array.filter(function(orden) {
+              if (orden.status == "abierta" && orden.caja == $scope.cajas[0].nombre)
+                return true;
+            });
+
+            $scope.totalOrdenes = $scope.ordenes.length;
+          });
+
+        });
+      }
+    })
+
+    $scope.user = '';
+    $scope.orden_id = '';
 
     $scope.delete = function(orden) {
       var modalInstance = $modal.open({
@@ -108,6 +148,7 @@ angular.module('posApp')
 
 angular.module('posApp')
   .controller('deleteCtrl', function($scope, $modalInstance, orden, Orden) {
+
     $scope.orden = orden;
     $scope.observacion = '';
 
@@ -127,10 +168,10 @@ angular.module('posApp')
 
     $scope.orden = orden;
 
-    if ($scope.orden.descuento){
-      $scope.descuento = $scope.orden.descuento.reduce(function(i,value){
+    if ($scope.orden.descuento) {
+      $scope.descuento = $scope.orden.descuento.reduce(function(i, value) {
         return i + value
-      },0)      
+      }, 0)
     }
 
     $scope.calculateTotal = function() {
@@ -355,7 +396,7 @@ angular.module('posApp')
     }
 
     $scope.cerrar = function() {
-      if ($scope.descuento != 0){
+      if ($scope.descuento != 0) {
         var descuento = $scope.calculateTotal() * ($scope.descuento / 100)
         $scope.o.descuento.push(descuento)
         var observacion_descuento = $scope.observacion_descuento

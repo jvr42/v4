@@ -1,6 +1,6 @@
 <navbar></navbar>
 <div class="container">
-  <h3 class="text-center">CAJA - ({{totalOrdenes}})</h3>
+  <h3 class="text-center">CAJA - ({{totalOrdenes}}) | {{caja_titulo}}</h3>
   <hr>
   <div class="row">
     <div class="col-lg-12 text-center">
@@ -53,6 +53,8 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-lg-6">
+        <div ng-if="!orden.caja"><b>Caja Principal</div>
+        <div ng-if="orden.caja"><b>Caja:</b> {{orden.caja}}</div>
         <div><b>Orden ingresada por:</b> {{orden.usuario.name}}</div>
         <div><b>Fecha:</b> {{ orden.fecha | date : 'd-M-yyyy - h:mm:ss a' }}</div>
         <div><b>Tipo de orden:</b> {{orden.tipo}}</div>
