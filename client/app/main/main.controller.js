@@ -27,7 +27,7 @@ angular.module('posApp')
 
     $http.get('/api/productos').then(function(response) {
       $scope.productos = response.data;
-      socket.syncUpdates('producto', $scope.productos);
+      //socket.syncUpdates('producto', $scope.productos);
     });
 
     $http.get('/api/cajas').then(function(response) {
@@ -161,7 +161,7 @@ angular.module('posApp')
       return total;
     }
 
-    $scope.$on('$destroy', function() {
+/*    $scope.$on('$destroy', function() {
       socket.unsyncUpdates('thing');
-    });
+    });*/
   });

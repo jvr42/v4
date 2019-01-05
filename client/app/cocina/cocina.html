@@ -9,8 +9,8 @@
                     <div class="panel-heading">
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-lg-4 col-xs-4 text-left"><span style="font-size:20px;"><b># {{orden.orden_id}}</b></span></div>
-                                <div class="col-lg-4 col-xs-4 text-center"><span style="font-size:20px;"><b>{{orden.usuario.name}}</b> | para {{orden.tipo}}</span></div>
+                                <div class="col-lg-3 col-xs-3 text-left"><span style="font-size:20px;"><b># {{orden.orden_id}}</b></span></div>
+                                <div class="col-lg-5 col-xs-5 text-center"><span style="font-size:20px;"><b>Mesa: {{orden.mesa}}</b> | <b>{{orden.usuario.name}}</b> | para {{orden.tipo}} | {{orden.numPersonas}} Persona(s) </span></div>
                                 <div class="col-lg-4 col-xs-4 text-right"><span style="font-size:20px;">{{ orden.fechaEditado | date : 'h:mm:ss a' }}</span></div>
                             </div>
                         </div>
