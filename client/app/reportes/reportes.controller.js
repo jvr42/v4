@@ -93,7 +93,7 @@ angular.module('posApp')
     })
 
     $scope.data = {
-      caja: "Caja Principal"
+      caja: "Todas"
     }
 
     $scope.getPedidos = function(desde, hasta) {
@@ -103,16 +103,17 @@ angular.module('posApp')
           if (orden.status == "cerrada") { return true }
         });
 
-        $scope.ordenes = $scope.ordenes.filter(function(orden) {
-          if ($scope.data.caja == "Caja Principal") {
-            if (orden.caja == "" || !orden.caja) {
-              return true
+        if ($scope.data.caja != "Todas"){
+          $scope.ordenes = $scope.ordenes.filter(function(orden) {
+            if ($scope.data.caja == "Caja Principal") {
+              if (orden.caja == "" || !orden.caja) {
+                return true
+              }
             }
-          }
-
-          if (orden.caja == $scope.data.caja) { return true }
-        });
-
+  
+            if (orden.caja == $scope.data.caja) { return true }
+          });
+        }
       
         $scope.totalVentasGeneral = $scope.ordenes.reduce(function(acc, val){
           return acc += val.total

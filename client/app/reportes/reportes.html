@@ -42,6 +42,7 @@
             <hr>
             <label>Caja: </label>
             <select ng-model="data.caja" ng-change="getPedidos(desde.today,hasta.today)" class="form-control">
+              <option selected value="Todas">Todas</option>
               <option selected value="Caja Principal">Caja Principal</option>
               <option ng-repeat="caja in selecciones" ng-value="caja.nombre">{{caja.nombre}}</option>
             </select>            
